@@ -1,4 +1,4 @@
-<nav class="bg-red font-sans fixed w-full top-0 left-0 z-50"> 
+<nav class="bg-white font-sans fixed w-full top-0 left-0 z-50"> 
     <div class="flex items-center justify-between px-15 py-1"> 
         <div class="logo flex items-center gap-2.5"> 
             <img src="{{ asset('images/Logo YOT.png') }}" alt="YOT Logo" class="h-[77px] w-auto max-w-[350px]"> 
