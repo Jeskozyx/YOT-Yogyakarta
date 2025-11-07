@@ -17,7 +17,7 @@
 <body class="bg-white">
     {{-- Tambahkan padding-top agar tidak ketutup navbar --}}
     <main class="px-8 pt-[100px]">
-        <h1 class="text-3xl font-bold">Welcome to the Landing Page!</h1>
+        <h1 class="text-3xl font-bold text-align center"> ABOUT UTS</h1>
     </main>
 </body>
 </html>
