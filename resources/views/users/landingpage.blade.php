@@ -19,9 +19,9 @@
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div class="absolute inset-0 -z-10">
             <div class="absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-pink-100 opacity-60"></div>
-            <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-            <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+            <div class="absolute top-0 -left-3 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-50 animate-blob"></div>
+            <div class="absolute top-36 -right-4 w-72 h-72 bg-[#FFF000] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-[FF52D3] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
         </div>
 
         <div class="container mx-auto px-6 py-20 relative z-10">
@@ -84,7 +84,7 @@
 
             <div class="max-w-6xl mx-auto mb-10 animate-fade-in-up animation-delay-600">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8">Our Programs</h2>
-                
+                <p class="text-center text-xl text-gray-700 mb-8">Program-program YOT bertujuan untuk membangun dan memberdayakan generasi muda Yogyakarta.</p>        
                 <div class="relative">
                     <div class="carousel-container overflow-hidden rounded-3xl">
                         <div id="carouselTrack" class="carousel-track flex transition-transform duration-700 ease-in-out">
@@ -210,7 +210,7 @@
                             @endphp
 
                             @foreach ($divisions as $division)
-                                <div class="division-card min-w-full md:min-w-[calc(33.333%-16px)] bg-white rounded-3xl p-6 shadow-xl border-2 border-[#FFF000] flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                                <div class="division-card min-w-full md:min-w-[calc(33.333%-16px)] bg-white rounded-3xl p-6 shadow-lg flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
                                     <div class="w-full aspect-square mb-6 rounded-2xl border-2 border-[#FFF000] bg-white relative overflow-hidden group">
                                         @if(isset($division['image']) && $division['image'])
                                             <img src="{{ asset($division['image']) }}" alt="{{ $division['name'] }}" class="w-full h-full object-cover">
@@ -231,7 +231,7 @@
                                     <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
                                         {{ $division['description'] }}
                                     </p>
-                                    <button class="mt-auto px-6 py-2 bg-[#0B89FC] hover:bg-[#42C4E3] text-white font-bold rounded-full transition-colors duration-300 shadow-md hover:shadow-lg">
+                                    <button class="mt-auto px-6 py-2 bg-[#4F53EA] hover:bg-[#42C4E3] text-white font-bold rounded-full transition-colors duration-300 shadow-md hover:shadow-lg">
                                         Detail
                                     </button>
                                 </div>

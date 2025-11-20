@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logos/Jogja_logo.png') }}" alt="YOT Logo" class="h-[77px] w-auto max-w-[350px]">

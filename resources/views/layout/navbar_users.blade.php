@@ -7,7 +7,7 @@
             <li><a href="#" class="text-black no-underline font-bold transition-colors duration-300 hover:text-yellow-400">Division</a></li> 
             <li><a href="#" class="text-black no-underline font-bold transition-colors duration-300 hover:text-yellow-400">Event</a></li> 
             <li><a href="#" class="text-black no-underline font-bold transition-colors duration-300 hover:text-yellow-400">Contact Us</a></li> 
-            <li><a href="#" class="login-btn bg-[#FFF000] font-bold text-black py-1.5 px-6 rounded-full no-underline transition-all duration-300 hover:bg-opacity/50 hover:text-black">Login</a></li> 
+            <li><a href="{{ route('login') }}" class="login-btn bg-[#FFF000] font-bold text-black py-1.5 px-6 rounded-full no-underline transition-all duration-300 hover:bg-opacity/50 hover:text-black">Login</a></li> 
         </ul> 
     </div> 
 </nav>
