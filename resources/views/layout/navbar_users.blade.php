@@ -1,4 +1,4 @@
-<nav class="bg-transparent font-sans fixed w-full top-0 left-0 z-50"> 
+<nav id="navbar" class="bg-transparent font-sans fixed w-full top-0 left-0 z-50 transition-all duration-700"> 
     <div class="flex items-center justify-between px-15 py-1"> 
         <div class="logo flex items-center gap-2.5"> 
             <img src="{{ asset('images/logos/Jogja_logo.png') }}" alt="YOT Logo" class="h-[77px] w-auto max-w-[350px]"> 
@@ -12,7 +12,7 @@
     </div> 
 </nav>
 
-<!-- <script>
+<script>
     window.addEventListener('scroll', function() {
         const navbar = document.getElementById('navbar');
         if (window.scrollY > 50) {
@@ -23,4 +23,4 @@
             navbar.classList.remove('bg-white', 'shadow-md');
         }
     });
-</script> -->
+</script>

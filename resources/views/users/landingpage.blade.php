@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -266,86 +267,124 @@
                 </button>
             </div>
 
-            <!-- Footer / Contact Us Section -->
-            <div class="max-w-6xl mx-auto animate-fade-in-up animation-delay-1000">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                    <!-- Left Column: Contact Form -->
-                    <div class="bg-[#FFF000] rounded-[2.5rem] p-8 md:p-10 shadow-xl relative overflow-hidden">
-                        <h2 class="text-4xl font-extrabold text-black mb-2">Contact Us</h2>
-                        <p class="text-black font-medium mb-1">Tertarik untuk berkolaborasi?</p>
-                        <p class="text-black text-sm mb-6 leading-relaxed">
-                            Hubungi kami melalui form di bawah ini. Kami siap mendiskusikan peluang kerja sama lebih lanjut.
-                        </p>
+            <!-- Meet The Team Section -->
+            <div class="max-w-7xl mx-auto mb-24 animate-fade-in-up animation-delay-1000">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Meet The Developers</h2>
+                
+                <div class="relative px-4 md:px-12">
+                    <div class="team-carousel-container overflow-hidden py-4">
+                        <div id="teamCarouselTrack" class="flex transition-transform duration-500 ease-in-out gap-6">
+                            @php
+                                $teamMembers = [
+                                    ['name' => 'Billy Boen', 'role' => 'Founder', 'image' => 'images/team/Muhammad Sulthan Al Azzam_124230127.png'],
+                                    ['name' => 'Stevanus Gunawan', 'role' => 'Co-Founder', 'image' => 'images/divisi/IMG_2437.JPG'],
+                                    ['name' => 'Yance Muchtar', 'role' => 'Advisor', 'image' => 'https://ui-avatars.com/api/?name=Yance+Muchtar&background=0D8ABC&color=fff&size=512'],
+                                    ['name' => 'Noverica Widjojo', 'role' => 'Director', 'image' => 'https://ui-avatars.com/api/?name=Noverica+Widjojo&background=0D8ABC&color=fff&size=512'],
+                                    ['name' => 'Team Member 5', 'role' => 'Staff', 'image' => 'https://ui-avatars.com/api/?name=Team+Member+5&background=0D8ABC&color=fff&size=512'],
+                                    ['name' => 'Team Member 6', 'role' => 'Staff', 'image' => 'https://ui-avatars.com/api/?name=Team+Member+6&background=0D8ABC&color=fff&size=512'],
+                                ];
+                            @endphp
 
-                        <form action="#" method="POST" class="space-y-4">
-                            <div>
-                                <input type="text" placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
-                            </div>
-                            <div>
-                                <input type="text" placeholder="No Whatsapp" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
-                            </div>
-                            <div>
-                                <input type="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
-                            </div>
-                            <div>
-                                <textarea placeholder="Pesan ...." rows="4" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all resize-none" required></textarea>
-                            </div>
-                            <button type="submit" class="bg-black text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 transition-colors shadow-lg mt-2">
-                                Submit
-                            </button>
-                        </form>
+                            @foreach ($teamMembers as $member)
+                                <div class="team-card min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] flex flex-col items-center group">
+                                    <div class="w-full aspect-[3/4] mb-6 rounded-2xl overflow-hidden shadow-lg relative">
+                                        <img src="{{ $member['image'] }}" alt="{{ $member['name'] }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
+                                            <span class="text-white font-medium">{{ $member['role'] }}</span>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 text-center">{{ $member['name'] }}</h3>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
+                    <!-- Navigation Buttons -->
+                    <button onclick="prevTeam()" 
+                            class="absolute left-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-xl transition-all duration-300 hover:scale-110 z-10 -ml-4 md:-ml-6 border border-gray-100 text-gray-800 hover:text-purple-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+                    <button onclick="nextTeam()" 
+                            class="absolute right-0 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-3 rounded-full shadow-xl transition-all duration-300 hover:scale-110 z-10 -mr-4 md:-mr-6 border border-gray-100 text-gray-800 hover:text-purple-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+                    <!-- Footer / Contact Us Section -->
+        <div class="max-w-6xl mx-auto animate-fade-in-up animation-delay-1000">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                <!-- Left Column: Contact Form -->
+                <div class="bg-[#FFF000] rounded-[2.5rem] p-8 md:p-10 shadow-xl relative overflow-hidden">
+                    <h2 class="text-4xl font-extrabold text-black mb-2">Contact Us</h2>
+                    <p class="text-black font-medium mb-1">Tertarik untuk berkolaborasi?</p>
+                    <p class="text-black text-sm mb-6 leading-relaxed">
+                        Hubungi kami melalui form di bawah ini. Kami siap mendiskusikan peluang kerja sama lebih lanjut.
+                    </p>
+
+                    <form action="#" method="POST" class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                        </div>
+                        <div>
+                            <input type="text" placeholder="No Whatsapp" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                        </div>
+                        <div>
+                            <textarea placeholder="Pesan ...." rows="4" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all resize-none" required></textarea>
+                        </div>
+                        <button type="submit" class="bg-black text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 transition-colors shadow-lg mt-2">
+                            Submit
+                        </button>
+                    </form>
+                </div>
                     <!-- Right Column: Contact Info & Map -->
                     <div class="flex flex-col h-full space-y-8">
                         <!-- Contact Details -->
                         <div class="space-y-4 text-gray-800">
                             <div class="flex items-start gap-4">
                                 <div class="mt-1 bg-gray-100 p-2 rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-900">
-                                        <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                                    </svg>
+                                    <i class="fas fa-map-marker-alt text-gray-900"></i>
                                 </div>
                                 <div>
-                                    <p class="font-medium text-gray-900">Jalan Kemang Selatan IX No 1B Mampang</p>
-                                    <p class="text-gray-600">Prapatan, Jakarta Selatan</p>
+                                    <p class="font-medium text-gray-900">Jl. Babarsari Jl. Tambak Bayan No.2, Janti, Caturtunggal</p>
+                                    <p class="text-gray-600">Depok, Sleman, Yogyakarta</p>
                                 </div>
-                            </div>
-                            
+                            </div>                   
                             <div class="flex items-center gap-4">
                                 <div class="bg-gray-100 p-2 rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-900">
-                                        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                                        <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
-                                    </svg>
+                                    <i class="fas fa-envelope text-gray-900"></i>
                                 </div>
                                 <p class="text-gray-700">info@yotinspirasi.com (General)</p>
                             </div>
-
                             <div class="flex items-center gap-4">
                                 <div class="bg-gray-100 p-2 rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-900">
-                                        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                                        <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
-                                    </svg>
+                                    <i class="fas fa-envelope text-gray-900"></i>
                                 </div>
                                 <p class="text-gray-700">brand@yotinspirasi.com (Partnership)</p>
                             </div>
-
                             <div class="flex items-center gap-4">
                                 <div class="bg-gray-100 p-2 rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-900">
-                                        <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 5.25V4.5z" clip-rule="evenodd" />
-                                    </svg>
+                                    <i class="fas fa-phone-alt text-gray-900"></i>
                                 </div>
                                 <p class="text-gray-700">081385640560</p>
+                            </div>       
+                            <div class="flex items-center gap-4">
+                                <div class="bg-gray-100 p-2 rounded-full">
+                                    <i class="fab fa-whatsapp text-gray-900"></i>
+                                </div>
+                                <p class="text-gray-700">081385640560 (WhatsApp)</p>
                             </div>
                         </div>
-
                         <!-- Google Map -->
                         <div class="w-full h-64 md:h-full min-h-[300px] rounded-3xl overflow-hidden shadow-lg border border-gray-200">
                             <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1394.0857877335059!2d110.41335143923534!3d-7.78208414061284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a599155555555%3A0x536eb168b1dca148!2sUniversitas%20Pembangunan%20Nasional%20%22Veteran%22%20Yogyakarta%20-%20Kampus%202%20Babarsari!5e1!3m2!1sid!2sid!4v1763575747140!5m2!1sid!2sid" 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2788.1766242797607!2d110.41597521867824!3d-7.781324937456133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a599155555555%3A0x536eb168b1dca148!2sUniversitas%20Pembangunan%20Nasional%20%22Veteran%22%20Yogyakarta%20-%20Kampus%202%20Babarsari!5e1!3m2!1sid!2sid!4v1763609477629!5m2!1sid!2sid" 
                                 width="100%" 
                                 height="100%" 
                                 style="border:0;" 
@@ -565,6 +604,61 @@
             
             // Initial call for division carousel
             updateDivisionCarousel();
+        });
+
+        // Team Carousel Functionality
+        let teamCurrentIndex = 0;
+        const teamTrack = document.getElementById('teamCarouselTrack');
+        const teamCards = document.querySelectorAll('.team-card');
+        const totalTeamMembers = teamCards.length;
+
+        function getVisibleTeamCards() {
+            if (window.innerWidth >= 1024) return 4;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function updateTeamCarousel() {
+            if(teamCards.length > 0) {
+                const cardStyle = window.getComputedStyle(teamTrack);
+                const gapValue = parseFloat(cardStyle.gap) || 0;
+                const cardWidthPx = teamCards[0].offsetWidth;
+                const moveAmount = (cardWidthPx + gapValue) * teamCurrentIndex;
+                
+                teamTrack.style.transform = `translateX(-${moveAmount}px)`;
+            }
+        }
+
+        function nextTeam() {
+            const visibleCards = getVisibleTeamCards();
+            if (teamCurrentIndex < totalTeamMembers - visibleCards) {
+                teamCurrentIndex++;
+                updateTeamCarousel();
+            } else {
+                teamCurrentIndex = 0;
+                updateTeamCarousel();
+            }
+        }
+
+        function prevTeam() {
+            const visibleCards = getVisibleTeamCards();
+            if (teamCurrentIndex > 0) {
+                teamCurrentIndex--;
+                updateTeamCarousel();
+            } else {
+                teamCurrentIndex = totalTeamMembers - visibleCards;
+                updateTeamCarousel();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            teamCurrentIndex = 0;
+            updateTeamCarousel();
+        });
+
+        // Initial call for team carousel
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTeamCarousel();
         });
 
         // Touch/swipe support for mobile
