@@ -17,6 +17,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Developer',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
+                'division' => 'GOD', // Default division for admin/dev
                 'email_verified_at' => now(),
             ]
         );
@@ -28,6 +29,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Teknologi',
                 'password' => Hash::make('123'), 
                 'role' => 'coordinator',
+                'division' => 'TECHNOLOGY',
                 'email_verified_at' => now(),
             ]
         );
