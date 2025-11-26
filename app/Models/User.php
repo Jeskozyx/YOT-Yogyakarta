@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     protected $attributes = [
         'role' => 'user',
-        'is_active' => true,
+        'is_active' => false,
     ];
 
     // Relasi ke events yang dibuat user

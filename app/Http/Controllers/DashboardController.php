@@ -13,7 +13,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $user = auth()->user();
+        
+        if ($user->role === 'coordinator') {
+            $events = Event::where('divisi', $user->division)->get();
+        } else {
+            $events = Event::all();
+        }
+
         $users = User::all();
         return view('dashboard', compact('events', 'users'));
     }
@@ -33,13 +40,16 @@ class DashboardController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'date' => 'required',
-            'description' => 'required',
+            'nama_kegiatan' => 'required',
+            'tanggal_pelaksanaan' => 'required',
+            'deskripsi' => 'required',
             'user_id' => 'required',
         ]);
 
-        Event::create($request->all());
+        $data = $request->all();
+        $data['divisi'] = auth()->user()->division; // Set division from logged in user
+
+        Event::create($data);
         return redirect()->route('dashboard')->with('success', 'Event berhasil ditambahkan');
     }
 

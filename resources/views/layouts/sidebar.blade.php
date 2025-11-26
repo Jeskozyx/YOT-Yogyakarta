@@ -39,7 +39,7 @@
                     <span class="menu-label">Dokumentasi</span>
                 </a>
             </li>
-            <li class="menu-item">
+            <!-- <li class="menu-item">
                 <a href="#" class="menu-link">
                     <span class="material-symbols-rounded">star</span>
                     <span class="menu-label">Favourites</span>
@@ -50,7 +50,7 @@
                     <span class="material-symbols-rounded">storefront</span>
                     <span class="menu-label">Products</span>
                 </a>
-            </li>
+            </li> -->
             @if(auth()->user()->role === 'admin')
             <li class="menu-item">
                 <a href="{{ route('account_manage') }}" class="menu-link {{ request()->routeIs('account_manage') ? 'active' : '' }}">

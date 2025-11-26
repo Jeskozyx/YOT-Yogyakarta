@@ -159,28 +159,44 @@
                     <div class="modern-carousel-wrapper relative h-[500px] md:h-[600px] mb-8">
                         <div class="carousel-stage relative w-full h-full perspective-1000">
                             @php
-                                $carouselImages = [
-                                    'BSOD.png',
-                                    'Earthday_Dark.png',
-                                    'Earthday_Light.png',
-                                    'm4.jpg',
-                                    'wallpaperflare.com_wallpaper (4).jpg',                          
-                                    'maps.png',
-                                    'wallpaperflare.com_wallpaper (4).jpg',
-                                    'maps.png',
-                                ];
+                                $divisions = ['TECHNOLOGY', 'GREEN', 'CATALYST', 'ENERGY', 'ENTREPRENEURSHIP', 'SOCIAL', 'MARCOMM'];
+                                $carouselItems = [];
+                                
+                                foreach($divisions as $divisionName) {
+                                    $event = \App\Models\Event::where('divisi', $divisionName)
+                                                ->whereNotNull('foto')
+                                                ->latest()
+                                                ->first();
+                                    
+                                    if($event) {
+                                        $carouselItems[] = [
+                                            'image' => asset('storage/' . $event->foto),
+                                            'program' => $event->nama_kegiatan,
+                                            'division' => $divisionName
+                                        ];
+                                    }
+                                }
+
+                                // Fallback if no events found (to keep layout not broken during dev)
+                                if(empty($carouselItems)) {
+                                     $carouselItems[] = [
+                                        'image' => asset('images/carousel/BSOD.png'),
+                                        'program' => 'No Events Found',
+                                        'division' => 'System'
+                                    ];
+                                }
                             @endphp
 
-                            @foreach ($carouselImages as $index => $imageName)
+                            @foreach ($carouselItems as $index => $item)
                                 <div class="carousel-item absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] md:w-[70%] h-[80%] transition-all duration-700 ease-out rounded-3xl overflow-hidden shadow-2xl {{ $index === 0 ? 'active' : '' }}" 
                                      data-index="{{ $index }}">
-                                    <img src="{{ asset('images/carousel/' . $imageName) }}" 
-                                         alt="{{ pathinfo($imageName, PATHINFO_FILENAME) }}" 
+                                    <img src="{{ $item['image'] }}" 
+                                         alt="{{ $item['program'] }}" 
                                          class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                     <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
-                                        <h3 class="text-2xl md:text-3xl font-bold mb-2">Program {{ $index + 1 }}</h3>
-                                        <p class="text-sm md:text-base opacity-90">{{ pathinfo($imageName, PATHINFO_FILENAME) }}</p>
+                                        <h3 class="text-2xl md:text-3xl font-bold mb-2">{{ $item['program'] }}</h3>
+                                        <p class="text-sm md:text-base opacity-90">{{ $item['division'] }}</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -208,11 +224,11 @@
 
                     <!-- Thumbnail Navigation -->
                     <div class="flex justify-center gap-3 overflow-x-auto pb-4 px-4 scrollbar-hide">
-                        @foreach ($carouselImages as $index => $imageName)
+                        @foreach ($carouselItems as $index => $item)
                             <button onclick="modernGoToSlide({{ $index }})" 
                                     class="thumbnail-btn flex-shrink-0 w-20 h-20 md:w-14 md:h-14 rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 {{ $index === 0 ? 'border-purple-500 ring-4 ring-purple-200' : 'border-gray-300 opacity-60 hover:opacity-100' }}"
                                     data-thumb-index="{{ $index }}">
-                                <img src="{{ asset('images/carousel/' . $imageName) }}" 
+                                <img src="{{ $item['image'] }}" 
                                      alt="Thumbnail {{ $index + 1 }}" 
                                      class="w-full h-full object-cover">
                             </button>
@@ -222,7 +238,7 @@
                     <!-- Counter -->
                     <div class="text-center mt-4">
                         <span class="inline-block bg-white px-6 py-2 rounded-full shadow-lg font-semibold text-gray-700">
-                            <span id="currentSlideNum">1</span> / <span id="totalSlidesNum">{{ count($carouselImages) }}</span>
+                            <span id="currentSlideNum">1</span> / <span id="totalSlidesNum">{{ count($carouselItems) }}</span>
                         </span>
                     </div>
                 </div>
@@ -584,7 +600,7 @@
     <script>
         // Modern 3D Carousel
         let modernCurrentSlide = 0;
-        const totalModernSlides = {{ count($carouselImages) }};
+        const totalModernSlides = {{ count($carouselItems) }};
         let modernAutoSlideInterval;
 
         function updateModernCarousel() {

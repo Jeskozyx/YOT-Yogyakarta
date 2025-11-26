@@ -21,11 +21,21 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .carousel-slide {
-            display: none;
+
+        /* Custom scrollbar for modal members list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        .carousel-slide.active {
-            display: flex;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
         }
     </style>
 </head>
@@ -39,49 +49,49 @@
                 'description' => 'Mengasah kemampuan digital dan inovasi teknologi untuk menciptakan perubahan positif.',
                 'color' => '#FFF000',
                 'textColor' => 'text-black',
-                'image' => 'images/carousel/m4.jpg'
+                'image' => 'images/divisi/Technology.png'
             ],
             'green' => [
                 'name' => 'GREEN',
                 'description' => 'Menggerakkan kepedulian terhadap bumi melalui aksi nyata demi lingkungan berkelanjutan.',
                 'color' => '#262626',
                 'textColor' => 'text-white',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Green.png'
             ],
             'catalyst' => [
                 'name' => 'CATALYST',
                 'description' => 'Menginspirasi lewat dunia pendidikan dan membangun ekosistem belajar yang seru dan bermanfaat.',
                 'color' => '#FFF000',
                 'textColor' => 'text-black',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Catalyst.png'
             ],
             'energy' => [
                 'name' => 'ENERGY',
                 'description' => 'Meningkatkan kesadaran akan pentingnya kesehatan fisik dan mental bagi produktivitas anak muda.',
                 'color' => '#262626',
                 'textColor' => 'text-white',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Energy.png'
             ],
             'entrepreneurship' => [
                 'name' => 'ENTREPRENEURSHIP',
                 'description' => 'Mendorong semangat kewirausahaan dan kemandirian ekonomi di kalangan pemuda.',
                 'color' => '#FFF000',
                 'textColor' => 'text-black',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Enterpreneurship.png'
             ],
             'social' => [
                 'name' => 'SOCIAL',
                 'description' => 'Menumbuhkan jiwa sosial dan kepedulian terhadap sesama melalui berbagai kegiatan amal.',
                 'color' => '#262626',
                 'textColor' => 'text-white',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Social.png'
             ],
             'marcomm' => [
                 'name' => 'MARCOMM',
                 'description' => 'Mengembangkan kemampuan komunikasi dan branding untuk memperluas dampak positif organisasi.',
                 'color' => '#FFF000',
                 'textColor' => 'text-black',
-                'image' => '/images/divisi/IMG_2437.JPG'
+                'image' => '/images/divisi/Marcomm.png'
             ],
         ];
 
@@ -104,7 +114,7 @@
         
         // Jika tidak ada foto dari database, gunakan default images
         if(empty($carouselImages)) {
-            $defaultImages = ['BSOD.png', 'Earthday_Dark.png', 'Earthday_Light.png', 'm4.jpg'];
+            $defaultImages = ['BSOD.png'];
             foreach($defaultImages as $image) {
                 $carouselImages[] = [
                     'src' => asset('images/carousel/' . $image),
@@ -119,20 +129,16 @@
         $carouselSlides = array_chunk($carouselImages, $slidesPerView);
     @endphp
 
-    <!-- Main Content -->
     <main class="w-full max-w-7xl mx-auto py-10 px-4 sm:px-8 lg:px-16">
         
-        <!-- Division Header -->
         <div class="mb-12 text-center">
             <div class="inline-block px-8 py-3 rounded-full mb-4 shadow-lg" style="background-color: {{ $currentDivision['color'] }}">
                 <h1 class="text-4xl md:text-5xl font-extrabold {{ $currentDivision['textColor'] }}">
                     {{ $currentDivision['name'] }}
                 </h1>
             </div>
-            <p class="text-xl text-gray-600 mt-4">Division Details</p>
         </div>
 
-        <!-- Division Image & Description -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div class="rounded-3xl overflow-hidden shadow-2xl border-4" style="border-color: {{ $currentDivision['color'] }}">
                 @if(isset($currentDivision['image']) && file_exists(public_path($currentDivision['image'])))
@@ -175,13 +181,12 @@
             </div>
         </div>
 
-        <!-- Gallery Carousel Section -->
         <div class="mb-16">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8">Gallery Kegiatan</h2>
             <p class="text-center text-xl text-gray-700 mb-8">Dokumentasi kegiatan dan momen {{ $currentDivision['name'] }}</p>
             
             <div class="relative">
-                <div class="carousel-container overflow-hidden rounded-3xl">
+                <div class="carousel-container overflow-hidden rounded-3xl ">
                     <div id="divisionCarouselTrack" class="carousel-track flex transition-transform duration-700 ease-in-out">
                         @foreach ($carouselSlides as $slideIndex => $slideImages)
                             <div class="carousel-slide min-w-full flex justify-center items-center p-4 gap-4">
@@ -190,9 +195,9 @@
                                         <img src="{{ $image['src'] }}" 
                                             alt="{{ $image['alt'] }}" 
                                             class="w-full h-full object-cover">
-                                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
+                                        <!-- <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
                                             <p class="text-sm font-semibold">{{ $image['title'] }}</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 @endforeach
                             </div>
@@ -225,8 +230,7 @@
             </div>
         </div>
 
-        <!-- Activities Section -->
-<div class="mb-16">
+        <div class="mb-16">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Kegiatan & Program</h2>
                 <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
@@ -294,7 +298,6 @@
             @endif
         </div>
 
-        <!-- CTA Section -->
         <div class="text-center py-16 px-8 rounded-3xl shadow-xl" style="background-color: {{ $currentDivision['color'] }}">
             <h2 class="text-3xl md:text-4xl font-bold {{ $currentDivision['textColor'] }} mb-4">
                 Tertarik Bergabung?
@@ -309,14 +312,18 @@
 
     </main>
 
-    <!-- Event Detail Modal -->
     <div id="eventModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeEventModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border-4" style="border-color: {{ $currentDivision['color'] }}">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
+                    <div class="sm:flex sm:items-start flex-col">
+                        
+                        <div id="modal-image-wrapper" class="w-full mb-4 hidden rounded-xl overflow-hidden shadow-md">
+                            <img id="modal-image" src="" alt="Foto Kegiatan" class="w-full h-48 sm:h-64 object-cover">
+                        </div>
+
                         <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
                             <h3 class="text-2xl leading-6 font-bold text-gray-900 mb-2" id="modal-title"></h3>
                             <div class="flex items-center justify-center sm:justify-start gap-2 text-gray-500 mb-4">
@@ -332,8 +339,7 @@
                                     Anggota yang Terlibat
                                 </h4>
                                 <div id="modal-members" class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
-                                    <!-- Members will be populated here -->
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -352,6 +358,8 @@
         const eventsData = {
             @foreach($events as $event)
             {{ $event->id }}: {
+                // FIXED: Menggunakan asset() untuk URL lengkap, bukan hanya nama file
+                foto: "{{ $event->foto ? asset('storage/' . $event->foto) : '' }}",
                 title: "{{ $event->nama_kegiatan }}",
                 date: "{{ $event->tanggal_pelaksanaan->format('d M Y') }}",
                 description: `{{ $event->deskripsi }}`,
@@ -363,6 +371,18 @@
         function openEventModal(id) {
             const event = eventsData[id];
             if (!event) return;
+
+            // --- Logic Gambar Modal ---
+            const imageWrapper = document.getElementById('modal-image-wrapper');
+            const imageElement = document.getElementById('modal-image');
+
+            if (event.foto) {
+                imageElement.src = event.foto;
+                imageWrapper.classList.remove('hidden');
+            } else {
+                imageWrapper.classList.add('hidden');
+            }
+            // ---------------------------
 
             document.getElementById('modal-title').textContent = event.title;
             document.getElementById('modal-date').textContent = event.date;

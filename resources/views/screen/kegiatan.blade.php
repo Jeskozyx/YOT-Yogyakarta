@@ -1,9 +1,8 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Kegiatan Baru') }}
-        </h2>
-    </x-slot>
+
+<x-admin-header title="KEGIATAN" breadcrumb="Kegiatan">
+
+</x-admin-header>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -15,9 +14,12 @@
                         </div>
                     @endif
 
-                    <!-- Form Tambah Kegiatan -->
-                    <form action="{{ route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Form Tambah/Edit Kegiatan -->
+                    <form action="{{ isset($event) ? route('kegiatan.update', $event->id) : route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @if(isset($event))
+                            @method('PUT')
+                        @endif
 
                         <!-- Nama Kegiatan -->
                         <div class="mb-6">
@@ -27,7 +29,7 @@
                             <input type="text" 
                                    name="nama_kegiatan" 
                                    id="nama_kegiatan"
-                                   value="{{ old('nama_kegiatan') }}"
+                                   value="{{ old('nama_kegiatan', $event->nama_kegiatan ?? '') }}"
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                                    placeholder="Masukkan nama kegiatan"
                                    required>
@@ -44,7 +46,7 @@
                             <input type="date" 
                                    name="tanggal_pelaksanaan" 
                                    id="tanggal_pelaksanaan"
-                                   value="{{ old('tanggal_pelaksanaan') }}"
+                                   value="{{ old('tanggal_pelaksanaan', isset($event) ? $event->tanggal_pelaksanaan->format('Y-m-d') : '') }}"
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                                    required>
                             @error('tanggal_pelaksanaan')
@@ -62,7 +64,7 @@
                                       rows="4"
                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
                                       placeholder="Deskripsikan kegiatan yang akan dilakukan"
-                                      required>{{ old('deskripsi') }}</textarea>
+                                      required>{{ old('deskripsi', $event->deskripsi ?? '') }}</textarea>
                             @error('deskripsi')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
@@ -85,11 +87,11 @@
                         </div>
 
                         <!-- Preview Foto -->
-                        <div class="mb-6 hidden" id="foto-preview-container">
+                        <div class="mb-6 {{ isset($event) && $event->foto ? '' : 'hidden' }}" id="foto-preview-container">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Preview Foto</label>
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                                <img id="foto-preview" class="mx-auto max-h-48 rounded-lg hidden">
-                                <p id="foto-preview-text" class="text-gray-500 text-sm mt-2"></p>
+                                <img id="foto-preview" src="{{ isset($event) && $event->foto ? asset('storage/' . $event->foto) : '' }}" class="mx-auto max-h-48 rounded-lg {{ isset($event) && $event->foto ? '' : 'hidden' }}">
+                                <p id="foto-preview-text" class="text-gray-500 text-sm mt-2">{{ isset($event) && $event->foto ? 'Foto saat ini' : '' }}</p>
                             </div>
                         </div>
 
@@ -121,9 +123,9 @@
                         <div class="flex gap-3">
                             <button type="submit" 
                                     class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-                                Simpan Kegiatan
+                                {{ isset($event) ? 'Update Kegiatan' : 'Simpan Kegiatan' }}
                             </button>
-                            <a href="{{ route('dashboard') }}" 
+                            <a href="{{ route('documentations') }}" 
                                class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-200">
                                 Batal
                             </a>
@@ -164,9 +166,12 @@
                 }
                 reader.readAsDataURL(file);
             } else {
-                previewContainer.classList.add('hidden');
-                preview.classList.add('hidden');
-                previewText.textContent = '';
+                // Jangan sembunyikan jika ada foto lama saat edit
+                @if(!isset($event))
+                    previewContainer.classList.add('hidden');
+                    preview.classList.add('hidden');
+                    previewText.textContent = '';
+                @endif
             }
         });
 
@@ -197,7 +202,7 @@
         }
 
         // Tambah anggota baru
-        document.getElementById('add-anggota').addEventListener('click', function() {
+        function addAnggotaItem(nama = '', jabatan = '') {
             const container = document.getElementById('anggota-container');
             const newItem = document.createElement('div');
             newItem.className = 'anggota-item flex gap-2 items-start';
@@ -212,6 +217,7 @@
                 <div class="flex-1">
                     <input type="text" 
                            name="nama_anggota[]" 
+                           value="${nama}"
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                            placeholder="Nama Anggota" required>
                 </div>
@@ -224,6 +230,21 @@
                 </button>
             `;
             container.appendChild(newItem);
+
+            // Set jabatan value and update config
+            if (jabatan) {
+                const select = newItem.querySelector('.jabatan-select');
+                select.value = jabatan;
+                select.dataset.previousValue = jabatan;
+                if (jabatanConfig[jabatan]) {
+                    jabatanConfig[jabatan].count++;
+                }
+                updateAllDropdowns();
+            }
+        }
+
+        document.getElementById('add-anggota').addEventListener('click', function() {
+            addAnggotaItem();
         });
 
         // Handle perubahan jabatan
@@ -268,9 +289,18 @@
             updateAllDropdowns();
         }
 
-        // Tambah 1 anggota default saat load
+        // Init data saat load
         window.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('add-anggota').click();
+            const existingAnggota = @json($event->anggota ?? []);
+            
+            if (existingAnggota && existingAnggota.length > 0) {
+                existingAnggota.forEach(anggota => {
+                    addAnggotaItem(anggota.nama, anggota.jabatan);
+                });
+            } else {
+                // Tambah 1 anggota default jika kosong (mode create)
+                addAnggotaItem();
+            }
         });
     </script>
 </x-app-layout>

@@ -28,11 +28,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/kegiatan', [EventController::class, 'create'])->name('kegiatan'); // Langsung ke form create
     Route::post('/kegiatan', [EventController::class, 'store'])->name('kegiatan.store');
+    Route::get('/kegiatan/{id}/edit', [EventController::class, 'edit'])->name('kegiatan.edit');
+    Route::put('/kegiatan/{id}', [EventController::class, 'update'])->name('kegiatan.update');
+    Route::delete('/kegiatan/{id}', [EventController::class, 'destroy'])->name('kegiatan.destroy');
 });
 
-Route::get('/documentations', function () {
-    return view('screen.documentations');
-})->middleware(['auth', 'verified'])->name('documentations');
+Route::get('/documentations', [EventController::class, 'documentation'])->name('documentations');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
