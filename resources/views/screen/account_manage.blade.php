@@ -1,208 +1,168 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-bold text-xl text-gray-800 leading-tight">
-                {{ __('Account Manager') }}
-            </h2>
-            <span class="text-sm text-gray-500">Overview & Management</span>
-        </div>
-    </x-slot>
-
     <div class="py-8 bg-gray-50/50 min-h-screen">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Account Manager</h1>
+                    <p class="text-gray-500 text-sm mt-1">Kelola pengguna, peran, dan akses sistem.</p>
+                </div>
+                <div>
+                    <button class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition duration-200 gap-2">
+                        <span class="material-symbols-rounded text-xl">person_add</span>
+                        <span>New User</span>
+                    </button>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 flex items-start justify-between">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-blue-200 transition duration-200">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Total Users</p>
                         <h3 class="text-3xl font-bold text-gray-800">{{ $users->total() }}</h3>
                     </div>
-                    <div class="p-3 bg-blue-50 rounded-lg text-blue-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
+                    <div class="h-12 w-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition duration-200">
+                        <span class="material-symbols-rounded text-2xl">group</span>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 flex items-start justify-between">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-purple-200 transition duration-200">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Administrators</p>
                         <h3 class="text-3xl font-bold text-gray-800">{{ $users->where('role', 'admin')->count() }}</h3>
                     </div>
-                    <div class="p-3 bg-purple-50 rounded-lg text-purple-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
+                    <div class="h-12 w-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition duration-200">
+                        <span class="material-symbols-rounded text-2xl">shield_person</span>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-6 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-gray-100 flex items-start justify-between">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-emerald-200 transition duration-200">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Coordinators</p>
                         <h3 class="text-3xl font-bold text-gray-800">{{ $users->where('role', 'coordinator')->count() }}</h3>
                     </div>
-                    <div class="p-3 bg-emerald-50 rounded-lg text-emerald-600">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
+                    <div class="h-12 w-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition duration-200">
+                        <span class="material-symbols-rounded text-2xl">supervisor_account</span>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                 
-                <div class="p-5 border-b border-gray-100 bg-white">
+                <div class="p-5 border-b border-gray-100">
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                         
                         <div class="relative w-full md:w-96">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </div>
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-rounded text-gray-400">search</span>
+                            </span>
                             <input type="text" 
-                                   class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out" 
+                                   class="block w-full pl-10 pr-3 py-2.5 border-gray-200 rounded-xl bg-gray-50 text-sm focus:bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition duration-200 placeholder-gray-400" 
                                    placeholder="Search by name or email...">
                         </div>
 
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <div class="flex gap-2">
-                                <select class="block w-full pl-3 pr-8 py-2 text-sm border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg text-gray-600 bg-white">
-                                    <option>Role: All</option>
-                                    <option>Admin</option>
-                                    <option>Coordinator</option>
-                                </select>
-                                <select class="block w-full pl-3 pr-8 py-2 text-sm border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg text-gray-600 bg-white">
-                                    <option>Status: All</option>
-                                    <option>Active</option>
-                                    <option>Inactive</option>
-                                </select>
-                            </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <select class="bg-white border-gray-200 text-gray-600 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 pl-3 pr-8 cursor-pointer hover:bg-gray-50 transition">
+                                <option>Role: All</option>
+                                <option>Admin</option>
+                                <option>Coordinator</option>
+                            </select>
                             
-                            <div class="h-8 w-px bg-gray-300 hidden sm:block mx-1"></div>
+                            <select class="bg-white border-gray-200 text-gray-600 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 py-2.5 pl-3 pr-8 cursor-pointer hover:bg-gray-50 transition">
+                                <option>Status: All</option>
+                                <option>Active</option>
+                                <option>Inactive</option>
+                            </select>
 
-                            <div class="flex gap-2">
-                                <button class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
-                                    <svg class="h-4 w-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
-                                    Export
-                                </button>
-                                <button class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
-                                    <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    New User
-                                </button>
-                            </div>
+                            <div class="h-6 w-px bg-gray-200 hidden sm:block mx-1"></div>
+
+                            <button class="inline-flex items-center px-4 py-2.5 border border-gray-200 text-sm font-medium rounded-xl text-gray-600 bg-white hover:bg-gray-50 hover:text-gray-900 transition gap-2">
+                                <span class="material-symbols-rounded text-lg">download</span>
+                                Export
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-100">
                         <thead class="bg-gray-50/50">
                             <tr>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Profile</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Verification</th>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Verified</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Joined Date</th>
-                                <th scope="col" class="relative px-6 py-4">
-                                    <span class="sr-only">Actions</span>
-                                </th>
+                                <th scope="col" class="relative px-6 py-4"><span class="sr-only">Actions</span></th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-100">
                             @foreach($users as $user)
-                            <tr class="hover:bg-gray-50/80 transition-colors duration-150 group">
+                            <tr class="hover:bg-blue-50/30 transition-colors duration-150 group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
+                                    <div class="flex items-center gap-4">
                                         <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-sm font-bold shadow-md shadow-blue-500/20">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </div>
                                         </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{{ $user->name }}</div>
-                                            <div class="text-sm text-gray-500">{{ $user->email }}</div>
+                                        <div>
+                                            <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
+                                            <div class="text-xs text-gray-500">{{ $user->email }}</div>
                                         </div>
                                     </div>
                                 </td>
+                                
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($user->role === 'admin')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 border border-purple-200">
-                                            Admin
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-purple-500"></span> Admin
                                         </span>
                                     @elseif($user->role === 'coordinator')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                            Coordinator
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Coordinator
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
-                                            User
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-600 border border-gray-200">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span> User
                                         </span>
                                     @endif
                                 </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($user->is_active)
-                                        <div class="flex items-center">
-                                            <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-                                            <span class="text-sm text-gray-600">Active</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="relative flex h-2.5 w-2.5">
+                                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ $user->is_active ? 'bg-green-400 opacity-75' : 'hidden' }}"></span>
+                                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 {{ $user->is_active ? 'bg-green-500' : 'bg-red-400' }}"></span>
                                         </div>
-                                    @else
-                                        <div class="flex items-center">
-                                            <div class="h-2.5 w-2.5 rounded-full bg-red-400 mr-2"></div>
-                                            <span class="text-sm text-gray-600">Inactive</span>
-                                        </div>
-                                    @endif
+                                        <span class="text-sm font-medium {{ $user->is_active ? 'text-green-700' : 'text-red-600' }}">
+                                            {{ $user->is_active ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </div>
                                 </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($user->email_verified_at)
-                                        <span class="inline-flex items-center text-sm text-green-700 bg-green-50 px-2 py-1 rounded-md">
-                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            Verified
-                                        </span>
+                                        <span class="material-symbols-rounded text-green-500 text-xl" title="Verified">verified</span>
                                     @else
-                                        <span class="inline-flex items-center text-sm text-amber-700 bg-amber-50 px-2 py-1 rounded-md">
-                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            Pending
-                                        </span>
+                                        <span class="material-symbols-rounded text-gray-300 text-xl" title="Pending">gpp_maybe</span>
                                     @endif
                                 </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $user->created_at->format('M d, Y') }}
                                 </td>
+
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex items-center justify-end space-x-3 opacity-60 group-hover:opacity-100 transition-opacity">
-                                        <button class="text-gray-400 hover:text-blue-600 transition-colors duration-200" title="Edit User">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                        </button>
-                                        <button class="text-gray-400 hover:text-gray-900 transition-colors duration-200" title="View Details">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
+                                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                        <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                                            <span class="material-symbols-rounded text-lg">edit</span>
                                         </button>
                                         
                                         @if($user->id !== auth()->id())
-                                            <button class="text-gray-400 hover:text-red-600 transition-colors duration-200" title="Delete User">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
+                                            <button class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
+                                                <span class="material-symbols-rounded text-lg">delete</span>
                                             </button>
-                                        @else
-                                            <span class="text-gray-200 cursor-not-allowed" title="Cannot delete your own account">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                                                </svg>
-                                            </span>
                                         @endif
                                     </div>
                                 </td>
@@ -212,30 +172,12 @@
                     </table>
                 </div>
 
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                    <div class="text-sm text-gray-500">
-                        Showing <span class="font-medium text-gray-900">{{ $users->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $users->lastItem() ?? 0 }}</span> of <span class="font-medium text-gray-900">{{ $users->total() }}</span> results
+                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                    <div class="text-xs text-gray-500">
+                        Showing <span class="font-medium text-gray-900">{{ $users->firstItem() ?? 0 }}</span> to <span class="font-medium text-gray-900">{{ $users->lastItem() ?? 0 }}</span> of results
                     </div>
-                    <div class="flex items-center space-x-2">
-                        @if($users->onFirstPage())
-                            <button disabled class="px-3 py-1.5 border border-gray-200 text-sm font-medium rounded-md text-gray-300 bg-white cursor-not-allowed">
-                                Previous
-                            </button>
-                        @else
-                            <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
-                                Previous
-                            </a>
-                        @endif
-
-                        @if($users->hasMorePages())
-                            <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
-                                Next
-                            </a>
-                        @else
-                            <button disabled class="px-3 py-1.5 border border-gray-200 text-sm font-medium rounded-md text-gray-300 bg-white cursor-not-allowed">
-                                Next
-                            </button>
-                        @endif
+                    <div>
+                        {{ $users->links() }} 
                     </div>
                 </div>
             </div>

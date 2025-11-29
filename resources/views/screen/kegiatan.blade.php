@@ -1,143 +1,157 @@
 <x-app-layout>
-
-<x-admin-header title="KEGIATAN" breadcrumb="Kegiatan">
-
-</x-admin-header>
-
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    @if(session('success'))
-                        <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <!-- Form Tambah/Edit Kegiatan -->
-                    <form action="{{ isset($event) ? route('kegiatan.update', $event->id) : route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        @if(isset($event))
-                            @method('PUT')
-                        @endif
-
-                        <!-- Nama Kegiatan -->
-                        <div class="mb-6">
-                            <label for="nama_kegiatan" class="block text-sm font-medium text-gray-700 mb-2">
-                                Nama Kegiatan <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" 
-                                   name="nama_kegiatan" 
-                                   id="nama_kegiatan"
-                                   value="{{ old('nama_kegiatan', $event->nama_kegiatan ?? '') }}"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                   placeholder="Masukkan nama kegiatan"
-                                   required>
-                            @error('nama_kegiatan')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Tanggal Pelaksanaan -->
-                        <div class="mb-6">
-                            <label for="tanggal_pelaksanaan" class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Pelaksanaan <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" 
-                                   name="tanggal_pelaksanaan" 
-                                   id="tanggal_pelaksanaan"
-                                   value="{{ old('tanggal_pelaksanaan', isset($event) ? $event->tanggal_pelaksanaan->format('Y-m-d') : '') }}"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                   required>
-                            @error('tanggal_pelaksanaan')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Deskripsi -->
-                        <div class="mb-6">
-                            <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-2">
-                                Deskripsi Kegiatan <span class="text-red-500">*</span>
-                            </label>
-                            <textarea name="deskripsi" 
-                                      id="deskripsi"
-                                      rows="4"
-                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
-                                      placeholder="Deskripsikan kegiatan yang akan dilakukan"
-                                      required>{{ old('deskripsi', $event->deskripsi ?? '') }}</textarea>
-                            @error('deskripsi')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Foto -->
-                        <div class="mb-6">
-                            <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">
-                                Foto Kegiatan
-                            </label>
-                            <input type="file" 
-                                   name="foto" 
-                                   id="foto"
-                                   accept="image/*"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
-                            <p class="text-gray-500 text-xs mt-1">Format: JPEG, PNG, JPG, GIF | Maksimal: 2MB</p>
-                            @error('foto')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Preview Foto -->
-                        <div class="mb-6 {{ isset($event) && $event->foto ? '' : 'hidden' }}" id="foto-preview-container">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Preview Foto</label>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                                <img id="foto-preview" src="{{ isset($event) && $event->foto ? asset('storage/' . $event->foto) : '' }}" class="mx-auto max-h-48 rounded-lg {{ isset($event) && $event->foto ? '' : 'hidden' }}">
-                                <p id="foto-preview-text" class="text-gray-500 text-sm mt-2">{{ isset($event) && $event->foto ? 'Foto saat ini' : '' }}</p>
-                            </div>
-                        </div>
-
-                        <!-- Anggota yang Terlibat -->
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Anggota yang Terlibat
-                            </label>
-                            <p class="text-gray-500 text-xs mb-3">Pilih jabatan dan masukkan nama anggota</p>
-                            
-                            <div id="anggota-container" class="space-y-3">
-                                <!-- Anggota items akan ditambahkan di sini -->
-                            </div>
-
-                            <button type="button" 
-                                    id="add-anggota"
-                                    class="mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                Tambah Anggota
-                            </button>
-
-                            @error('nama_anggota')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="flex gap-3">
-                            <button type="submit" 
-                                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-                                {{ isset($event) ? 'Update Kegiatan' : 'Simpan Kegiatan' }}
-                            </button>
-                            <a href="{{ route('documentations') }}" 
-                               class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition duration-200">
-                                Batal
-                            </a>
-                        </div>
-                    </form>
+    <div class="bg-gray-50 pt-8 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 tracking-tight">
+                        {{ isset($event) ? 'Edit Kegiatan' : 'Buat Kegiatan Baru' }}
+                    </h1>
+                    <p class="mt-2 text-sm text-gray-600">
+                        Isi formulir di bawah ini untuk {{ isset($event) ? 'memperbarui data' : 'menambahkan' }} agenda kegiatan komunitas.
+                    </p>
+                </div>
+                <div class="hidden sm:block">
+                   <a href="{{ route('documentations') }}" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition">
+                        &larr; Kembali ke Dokumentasi
+                   </a>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 pb-12">
+        @if(session('success'))
+            <div x-data="{ show: true }" x-show="show" class="mb-6 flex items-center justify-between bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg shadow-sm">
+                <div class="flex items-center">
+                    <span class="material-symbols-rounded mr-2">check_circle</span>
+                    <span>{{ session('success') }}</span>
+                </div>
+                <button @click="show = false" class="text-green-500 hover:text-green-700">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+        @endif
+
+        <form action="{{ isset($event) ? route('kegiatan.update', $event->id) : route('kegiatan.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @if(isset($event))
+                @method('PUT')
+            @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="material-symbols-rounded text-blue-500">edit_document</span>
+                            Detail Kegiatan
+                        </h2>
+                        
+                        <div class="space-y-5">
+                            <div>
+                                <label for="nama_kegiatan" class="block text-sm font-medium text-gray-700 mb-1">Nama Kegiatan</label>
+                                <input type="text" name="nama_kegiatan" id="nama_kegiatan"
+                                       value="{{ old('nama_kegiatan', $event->nama_kegiatan ?? '') }}"
+                                       class="w-full bg-gray-50 text-gray-900 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition duration-200 px-4 py-2.5 placeholder-gray-400"
+                                       placeholder="Contoh: Bakti Sosial Jogja 2025" required>
+                                @error('nama_kegiatan') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div>
+                                <label for="tanggal_pelaksanaan" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Pelaksanaan</label>
+                                <input type="date" name="tanggal_pelaksanaan" id="tanggal_pelaksanaan"
+                                       value="{{ old('tanggal_pelaksanaan', isset($event) ? $event->tanggal_pelaksanaan->format('Y-m-d') : '') }}"
+                                       class="w-full bg-gray-50 text-gray-900 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition duration-200 px-4 py-2.5" required>
+                                @error('tanggal_pelaksanaan') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div>
+                                <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Lengkap</label>
+                                <textarea name="deskripsi" id="deskripsi" rows="4"
+                                          class="w-full bg-gray-50 text-gray-900 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition duration-200 px-4 py-2.5 placeholder-gray-400"
+                                          placeholder="Jelaskan tujuan dan detail kegiatan..." required>{{ old('deskripsi', $event->deskripsi ?? '') }}</textarea>
+                                @error('deskripsi') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <span class="material-symbols-rounded text-indigo-500">groups</span>
+                                Tim & Panitia
+                            </h2>
+                            <button type="button" id="add-anggota"
+                                    class="text-sm px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 font-medium transition flex items-center gap-1">
+                                <span class="material-symbols-rounded text-base">add</span>
+                                Tambah
+                            </button>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-xl p-4 border border-dashed border-gray-200">
+                            <div id="anggota-container" class="space-y-3">
+                                </div>
+                            <p id="empty-state-anggota" class="text-center text-gray-400 text-sm py-2 hidden">
+                                Belum ada anggota yang ditambahkan.
+                            </p>
+                        </div>
+                        @error('nama_anggota') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <span class="material-symbols-rounded text-pink-500">image</span>
+                            Foto Poster/Dokumentasi
+                        </h2>
+
+                        <div class="relative group">
+                            <input type="file" name="foto" id="foto" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            
+                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 hover:border-blue-400 transition duration-200" id="drop-zone">
+                                <div class="mb-3">
+                                    <span class="material-symbols-rounded text-4xl text-gray-300 group-hover:text-blue-400 transition">cloud_upload</span>
+                                </div>
+                                <p class="text-sm font-medium text-gray-700">Klik atau Drag foto ke sini</p>
+                                <p class="text-xs text-gray-500 mt-1">JPG, PNG, max 2MB</p>
+                            </div>
+                        </div>
+                        @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+
+                        <div id="foto-preview-container" class="mt-4 {{ isset($event) && $event->foto ? '' : 'hidden' }}">
+                            <div class="relative rounded-xl overflow-hidden shadow-md group">
+                                <img id="foto-preview" src="{{ isset($event) && $event->foto ? asset('storage/' . $event->foto) : '' }}" class="w-full h-auto object-cover">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200">
+                                    <p class="text-white text-xs font-medium" id="foto-preview-text">Ganti Foto</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
+                        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Aksi</h3>
+                        <div class="space-y-3">
+                            <button type="submit" 
+                                    class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 transition duration-200 transform hover:-translate-y-0.5">
+                                <span class="material-symbols-rounded">save</span>
+                                {{ isset($event) ? 'Update Kegiatan' : 'Simpan Kegiatan' }}
+                            </button>
+                            
+                            <a href="{{ route('documentations') }}" 
+                               class="w-full flex justify-center items-center gap-2 px-4 py-3 bg-white text-gray-700 border border-gray-200 rounded-xl font-medium hover:bg-gray-50 hover:text-gray-900 transition duration-200">
+                                Batal
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
     <script>
-        // Konfigurasi jabatan dan maksimal anggota
         const jabatanConfig = {
             'Ketua Pelaksana': { max: 1, count: 0 },
             'Wakil': { max: 1, count: 0 },
@@ -149,122 +163,114 @@
             'Sponsorship': { max: 10, count: 0 }
         };
 
-        // Preview foto
+        // Improved Image Preview Logic
         document.getElementById('foto').addEventListener('change', function(e) {
             const file = e.target.files[0];
             const previewContainer = document.getElementById('foto-preview-container');
             const preview = document.getElementById('foto-preview');
-            const previewText = document.getElementById('foto-preview-text');
+            const dropZone = document.getElementById('drop-zone');
 
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     preview.src = e.target.result;
-                    preview.classList.remove('hidden');
-                    previewText.textContent = file.name;
                     previewContainer.classList.remove('hidden');
+                    // Optional: Visual feedback on dropzone
+                    dropZone.classList.add('border-blue-500', 'bg-blue-50');
                 }
                 reader.readAsDataURL(file);
-            } else {
-                // Jangan sembunyikan jika ada foto lama saat edit
-                @if(!isset($event))
-                    previewContainer.classList.add('hidden');
-                    preview.classList.add('hidden');
-                    previewText.textContent = '';
-                @endif
             }
         });
 
-        // Generate dropdown options
         function generateJabatanOptions() {
-            let options = '<option value="">-- Pilih Jabatan --</option>';
+            let options = '<option value="">Pilih Jabatan</option>';
             for (let jabatan in jabatanConfig) {
                 const config = jabatanConfig[jabatan];
                 const remaining = config.max - config.count;
                 const disabled = remaining <= 0 ? 'disabled' : '';
-                options += `<option value="${jabatan}" ${disabled}>${jabatan} (${remaining}/${config.max} tersisa)</option>`;
+                const labelText = remaining <= 0 ? `${jabatan} (Penuh)` : `${jabatan}`;
+                options += `<option value="${jabatan}" ${disabled}>${labelText}</option>`;
             }
             return options;
         }
 
-        // Update semua dropdown
         function updateAllDropdowns() {
             const selects = document.querySelectorAll('.jabatan-select');
             selects.forEach(select => {
                 const currentValue = select.value;
                 select.innerHTML = generateJabatanOptions();
-                
-                // Kembalikan nilai yang sudah dipilih
-                if (currentValue) {
-                    select.value = currentValue;
-                }
+                if (currentValue) select.value = currentValue;
             });
         }
 
-        // Tambah anggota baru
+        // Modernized Member Item HTML
         function addAnggotaItem(nama = '', jabatan = '') {
             const container = document.getElementById('anggota-container');
             const newItem = document.createElement('div');
-            newItem.className = 'anggota-item flex gap-2 items-start';
+            
+            // Animation classes
+            newItem.className = 'anggota-item bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row gap-3 items-start sm:items-center transition-all duration-300 ease-out transform translate-y-2 opacity-0';
+            
             newItem.innerHTML = `
-                <div class="flex-1">
+                <div class="flex-1 w-full sm:w-auto">
                     <select name="jabatan[]" 
-                            class="jabatan-select w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            class="jabatan-select w-full bg-gray-50 border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition px-3 py-2"
                             onchange="handleJabatanChange(this)" required>
                         ${generateJabatanOptions()}
                     </select>
                 </div>
-                <div class="flex-1">
+                <div class="flex-1 w-full sm:w-auto relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-rounded text-gray-400 text-sm">person</span>
+                    </span>
                     <input type="text" 
                            name="nama_anggota[]" 
                            value="${nama}"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           placeholder="Nama Anggota" required>
+                           class="w-full pl-9 pr-3 py-2 bg-gray-50 border-gray-200 rounded-lg text-sm focus:ring-indigo-500 focus:border-indigo-500 transition"
+                           placeholder="Nama Lengkap" required>
                 </div>
                 <button type="button" 
-                        class="remove-anggota px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200"
+                        class="remove-anggota text-gray-400 hover:text-red-500 transition p-1 rounded-full hover:bg-red-50 self-end sm:self-center"
                         onclick="removeAnggota(this)">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
+                    <span class="material-symbols-rounded">delete</span>
                 </button>
             `;
             container.appendChild(newItem);
 
-            // Set jabatan value and update config
+            // Trigger animation
+            requestAnimationFrame(() => {
+                newItem.classList.remove('translate-y-2', 'opacity-0');
+            });
+
             if (jabatan) {
                 const select = newItem.querySelector('.jabatan-select');
                 select.value = jabatan;
                 select.dataset.previousValue = jabatan;
-                if (jabatanConfig[jabatan]) {
-                    jabatanConfig[jabatan].count++;
-                }
+                if (jabatanConfig[jabatan]) jabatanConfig[jabatan].count++;
                 updateAllDropdowns();
             }
+            
+            checkEmptyState();
         }
 
         document.getElementById('add-anggota').addEventListener('click', function() {
             addAnggotaItem();
         });
 
-        // Handle perubahan jabatan
         function handleJabatanChange(select) {
             const oldJabatan = select.dataset.previousValue;
             const newJabatan = select.value;
 
-            // Kurangi count jabatan lama
-            if (oldJabatan && jabatanConfig[oldJabatan]) {
-                jabatanConfig[oldJabatan].count--;
-            }
+            if (oldJabatan && jabatanConfig[oldJabatan]) jabatanConfig[oldJabatan].count--;
 
-            // Tambah count jabatan baru
             if (newJabatan && jabatanConfig[newJabatan]) {
                 if (jabatanConfig[newJabatan].count < jabatanConfig[newJabatan].max) {
                     jabatanConfig[newJabatan].count++;
                     select.dataset.previousValue = newJabatan;
                 } else {
-                    alert(`Maksimal ${jabatanConfig[newJabatan].max} orang untuk jabatan ${newJabatan}`);
+                    alert(`Jabatan ${newJabatan} sudah penuh (Max ${jabatanConfig[newJabatan].max})`);
                     select.value = oldJabatan || '';
+                    if (oldJabatan) jabatanConfig[oldJabatan].count++; // Revert count
                     return;
                 }
             } else {
@@ -274,22 +280,33 @@
             updateAllDropdowns();
         }
 
-        // Hapus anggota
         function removeAnggota(button) {
             const item = button.closest('.anggota-item');
             const select = item.querySelector('.jabatan-select');
             const jabatan = select.dataset.previousValue;
 
-            // Kurangi count jabatan
-            if (jabatan && jabatanConfig[jabatan]) {
-                jabatanConfig[jabatan].count--;
-            }
+            if (jabatan && jabatanConfig[jabatan]) jabatanConfig[jabatan].count--;
 
-            item.remove();
-            updateAllDropdowns();
+            // Fade out animation
+            item.style.opacity = '0';
+            item.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                item.remove();
+                updateAllDropdowns();
+                checkEmptyState();
+            }, 200);
         }
 
-        // Init data saat load
+        function checkEmptyState() {
+            const container = document.getElementById('anggota-container');
+            const emptyState = document.getElementById('empty-state-anggota');
+            if(container.children.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
             const existingAnggota = @json($event->anggota ?? []);
             
@@ -298,7 +315,6 @@
                     addAnggotaItem(anggota.nama, anggota.jabatan);
                 });
             } else {
-                // Tambah 1 anggota default jika kosong (mode create)
                 addAnggotaItem();
             }
         });
