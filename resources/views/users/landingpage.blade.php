@@ -159,13 +159,13 @@
                             // Fallback Data
                             if(empty($carouselItems)) {
                                 $carouselItems = [
-                                    ['image' => 'images/divisi/Green.png', 'program' => 'Nature Care', 'division' => 'GREEN'],
-                                    ['image' => 'images/divisi/Technology.png', 'program' => 'Digital Fest', 'division' => 'TECHNOLOGY'],
-                                    ['image' => 'images/divisi/Social.png', 'program' => 'Charity Run', 'division' => 'SOCIAL'],
-                                    ['image' => 'images/divisi/Catalyst.png', 'program' => 'Edu Fair', 'division' => 'CATALYST'],
-                                    ['image' => 'images/divisi/Energy.png', 'program' => 'Health Life', 'division' => 'ENERGY'],
-                                    ['image' => 'images/divisi/Enterpreneurship.png', 'program' => 'Health Life', 'division' => 'ENTREPRENEURSHIP'],
-                                    ['image' => 'images/divisi/Marcomm.png', 'program' => 'Health Life', 'division' => 'MARCOMM'],
+                                    ['image' => 'images/divisi/Green.png', 'program' => '', 'division' => 'GREEN'],
+                                    ['image' => 'images/divisi/Technology.png', 'program' => '', 'division' => 'TECHNOLOGY'],
+                                    ['image' => 'images/divisi/Social.png', 'program' => '', 'division' => 'SOCIAL'],
+                                    ['image' => 'images/divisi/Catalyst.png', 'program' => '', 'division' => 'CATALYST'],
+                                    ['image' => 'images/divisi/Energy.png', 'program' => '', 'division' => 'ENERGY'],
+                                    ['image' => 'images/divisi/Enterpreneurship.png', 'program' => '', 'division' => 'ENTREPRENEURSHIP'],
+                                    ['image' => 'images/divisi/Marcomm.png', 'program' => '', 'division' => 'MARCOMM'],
                                 ];
                             }
                         @endphp
@@ -188,13 +188,13 @@
                                              alt="{{ $item['program'] }}" 
                                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                              onerror="this.src='images/divisi/Technology.png'">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-60"></div>
                                     </div>
                                     
                                     <div class="pt-4 px-2 text-left">
                                         <h3 class="text-xl font-extrabold text-gray-900 leading-tight mb-1 uppercase tracking-tight">{{ $item['division'] }}</h3>
                                         <p class="text-sm text-gray-500 font-medium line-clamp-1">{{ $item['program'] }}</p>
-                                        <p class="text-xs text-gray-400 mt-2">Learn more about {{ strtolower($item['division']) }}</p>
+                                        <!-- <p class="text-xs text-gray-400 mt-2">Learn more about {{ strtolower($item['division']) }}</p> -->
                                     </div>
                                 </div>
                             </div>
@@ -274,30 +274,69 @@
             </div>
 
             <div class="max-w-8xl mx-auto mb-24 animate-fade-in-up animation-delay-600">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Our Event</h2>
-                <div class="space-y-6 px-4 md:px-12">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">Our Events</h2>
+                    <div class="h-1.5 w-24 bg-[#FFF000] mx-auto rounded-full"></div>
+                </div>
+
+                <div class="space-y-8 px-4 md:px-12">
                     @php
-                        $events = [
-                            ['type' => 'Webinar', 'date' => '9 Oct 2025', 'desc' => 'Webinar inspiratif tentang masa depan teknologi.', 'img' => '/images/events/12-Light.jpg'],
-                            ['type' => 'Workshop', 'date' => '15 Oct 2025', 'desc' => 'Workshop hands-on pengembangan skill digital.', 'img' => '/images/events/1715195505778.jpg'],
-                        ];
+                        // LOGIC: Ambil 3 event terbaru
+                        $events = \App\Models\Event::latest()->take(3)->get();
                     @endphp
-                    @foreach ($events as $event)
-                        <div class="flex flex-col md:flex-row gap-6 bg-gradient-to-r from-yellow-50 to-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all border-2 border-yellow-100">
-                            <div class="w-full md:w-64 flex-shrink-0">
-                                <div class="aspect-[4/3] rounded-xl overflow-hidden border-2 border-[#FFF000] bg-gray-200">
-                                     <img src="{{ asset($event['img']) }}" onerror="this.src='https://via.placeholder.com/300'" class="w-full h-full object-cover">
+
+                    @forelse ($events as $event)
+                        <div class="group relative bg-white border border-gray-100 rounded-[1rem] p-4 shadow-lg hover:shadow-2xl transition-all duration-300">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                
+                                <div class="w-full md:w-72 flex-shrink-0">
+                                    <div class="aspect-[4/3] md:h-56 w-full rounded-2xl overflow-hidden relative">
+                                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold shadow-sm z-10 border border-gray-100">
+                                            {{ \Carbon\Carbon::parse($event->tanggal_pelaksanaan)->format('d M Y') }}
+                                        </div>
+                                        
+                                        <img src="{{ asset('storage/' . $event->foto) }}" 
+                                             onerror="this.src='https://via.placeholder.com/400x300?text=Event+YOT'" 
+                                             alt="{{ $event->nama_kegiatan }}"
+                                             class="w-full h-full object-cover transform transition-transform duration-700">
+                                        
+                                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="flex-1 flex flex-col justify-center">
-                                <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $event['type'] }}</h3>
-                                <div class="flex items-center gap-2 mb-3 text-gray-500 text-sm font-semibold">
-                                    <i class="far fa-calendar-alt"></i> {{ $event['date'] }}
+
+                                <div class="flex-1 flex flex-col justify-center py-2 pr-4">
+                                    <div class="mb-3">
+                                        <span class="inline-block bg-[#FFF000] text-black text-[10px] font-extrabold px-3 py-1 rounded-full tracking-wider uppercase">
+                                            {{ $event->divisi }}
+                                        </span>
+                                    </div>
+
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                                        {{ $event->nama_kegiatan }}
+                                    </h3>
+                                    
+                                    <p class="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
+                                        {{ $event->deskripsi ?? 'Kegiatan inspiratif dari Young On Top Yogyakarta untuk membangun generasi muda yang berdampak positif.' }}
+                                    </p>
+
+                                    <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
+                                        <span class="text-xs text-gray-400 font-semibold">
+                                            <i class="fas fa-map-marker-alt mr-1"></i> Yogyakarta
+                                        </span>
+                                        <a href="#" class="text-sm font-bold text-gray-900 flex items-center gap-2 group/link hover:text-blue-600 transition-colors">
+                                            See Details 
+                                            <i class="fas fa-arrow-right transform group-hover/link:translate-x-1 transition-transform"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <p class="text-gray-700">{{ $event['desc'] }}</p>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center py-16 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200">
+                            <i class="far fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500 font-medium">Belum ada event yang ditambahkan.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 

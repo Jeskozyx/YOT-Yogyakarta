@@ -10,9 +10,11 @@ Route::get('/', function () {
     return view('users.landingpage');
 });
 
-Route::get('/about', function () {
-    return view('users.about_us');
-});
+Route::get('/aboutus', function () {
+    return view('users.aboutus');
+})->name('aboutus');
+
+Route::get('/division', [EventController::class, 'divisionPage'])->name('division');
 
 Route::get('/division/{division}', function ($division) {
     return view('users.detail', ['division' => $division]);

@@ -9,6 +9,25 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+
+    // TAMBAHKAN METHOD INI:
+    public function divisionPage()
+    {
+        // 1. Ambil daftar divisi yang unik dari tabel events untuk dijadikan Tab
+        $divisions = Event::select('divisi')
+                          ->whereNotNull('divisi')
+                          ->distinct()
+                          ->pluck('divisi');
+
+        // 2. Ambil semua event yang punya foto, urutkan dari yang terbaru
+        $events = Event::whereNotNull('foto')
+                       ->where('foto', '!=', '')
+                       ->latest('tanggal_pelaksanaan')
+                       ->get();
+
+        return view('users.division', compact('divisions', 'events'));
+    }
+
     public function create()
     {
         return view('screen.kegiatan');
@@ -53,7 +72,7 @@ class EventController extends Controller
 
        $filterOptions = $filterOptionsQuery->latest()->get();
 
-        return view('screen.documentations', compact('events', 'filterOptions'));
+        return view('screen.documentations', compact('events', 'filterOptions'));  
     }
 
     public function store(Request $request)

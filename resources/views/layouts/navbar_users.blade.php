@@ -40,8 +40,8 @@
                 
                 <!-- Desktop Menu -->
                 <ul class="hidden md:flex list-none items-center space-x-6 lg:space-x-8 m-0 p-0">
-                    <li><a href="#" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">About Us</a></li>
-                    <li><a href="#" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Division</a></li>
+                    <li><a href="{{ route('aboutus') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">About Us</a></li>
+                    <li><a href="{{ route('division') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Division</a></li>
                     <li><a href="#" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Event</a></li>
                     <li><a href="#" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Contact Us</a></li>
                     <li><a href="{{ route('login') }}" class="login-btn bg-yellow-400 font-bold text-black py-2 px-6 rounded-full no-underline transition-all duration-300 hover:bg-yellow-500 hover:shadow-md">Login</a></li>
