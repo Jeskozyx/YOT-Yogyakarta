@@ -19,6 +19,7 @@ class User extends Authenticatable
         'role',
         'division',
         'is_active',
+        'banned_until',
     ];
 
     protected $hidden = [
@@ -32,6 +33,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'banned_until' => 'datetime',
         ];
     }
 

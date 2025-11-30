@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return view('users.landingpage');
 });
@@ -24,6 +25,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/account_manage', [UserController::class, 'index'])->name('account_manage');
+    Route::put('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
+    Route::patch('/users/{id}/unban', [UserController::class, 'unban'])->name('users.unban');
 });
 
 // HANYA BUAT INPUT KEGIATAN SAJA
