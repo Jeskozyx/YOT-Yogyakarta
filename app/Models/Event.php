@@ -12,9 +12,10 @@ class Event extends Model
 
     protected $fillable = [
         'nama_kegiatan',
+        'lokasi_kegiatan',
         'tanggal_pelaksanaan',
         'deskripsi',
-        'foto', // ✅ TAMBAH INI
+        'foto', 
         'anggota',
         'divisi',
         'user_id'

@@ -327,6 +327,10 @@
                         <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
                             <h3 class="text-2xl leading-6 font-bold text-gray-900 mb-2" id="modal-title"></h3>
                             <div class="flex items-center justify-center sm:justify-start gap-2 text-gray-500 mb-4">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="modal-location" class="text-sm font-medium"></span>
+                            </div>
+                            <div class="flex items-center justify-center sm:justify-start gap-2 text-gray-500 mb-4">
                                 <i class="far fa-calendar"></i>
                                 <span id="modal-date" class="text-sm font-medium"></span>
                             </div>
@@ -361,6 +365,7 @@
                 // FIXED: Menggunakan asset() untuk URL lengkap, bukan hanya nama file
                 foto: "{{ $event->foto ? asset('storage/' . $event->foto) : '' }}",
                 title: "{{ $event->nama_kegiatan }}",
+                location: "{{ $event->lokasi_kegiatan }}",
                 date: "{{ $event->tanggal_pelaksanaan->format('d M Y') }}",
                 description: `{{ $event->deskripsi }}`,
                 members: @json($event->anggota)
@@ -386,6 +391,7 @@
 
             document.getElementById('modal-title').textContent = event.title;
             document.getElementById('modal-date').textContent = event.date;
+            document.getElementById('modal-location').textContent = event.location;
             document.getElementById('modal-description').textContent = event.description;
 
             const membersContainer = document.getElementById('modal-members');

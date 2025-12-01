@@ -1,3 +1,7 @@
+<head>
+    @viteReactRefresh
+    @vite(['resources/css/app.css', 'resources/js/app.jsx']) 
+</head>
 <x-app-layout>
     <div class="min-h-screen bg-gray-50/50 pb-8">
         
@@ -5,18 +9,15 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">
+                        <h1 id="react-split-text" 
+                            class="text-2xl font-bold text-gray-900"
+                            data-text="Selamat Datang, {{ Auth::user()->name }}! 👋">
                             Selamat Datang, {{ Auth::user()->name }}! 👋
                         </h1>
+                        
                         <p class="mt-1 text-sm text-gray-500">
                             Berikut adalah ringkasan aktivitas dan jadwal kegiatan komunitas.
                         </p>
-                    </div>
-                    <div>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                            <span class="material-symbols-rounded text-base">today</span>
-                            {{ now()->translatedFormat('l, d F Y') }}
-                        </span>
                     </div>
                 </div>
             </div>

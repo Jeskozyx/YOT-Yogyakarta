@@ -100,6 +100,7 @@
                                 <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                                 <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell">Verified</th>
                                 <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Joined Date</th>
+                                <th scope="col" class="px-4 md:px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Control</th>
                                 <th scope="col" class="relative px-4 md:px-6 py-3"><span class="sr-only">Actions</span></th>
                             </tr>
                         </thead>
@@ -185,9 +186,9 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-2 opacity-100 group-hover:opacity-100 transition-opacity duration-200">
                                         
-                                        <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                                        <!-- <button class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
                                             <span class="material-symbols-rounded text-lg">edit</span>
-                                        </button>
+                                        </button> -->
                                         
                                         @if($user->id !== auth()->id())
                                             

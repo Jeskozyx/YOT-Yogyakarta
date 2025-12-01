@@ -59,6 +59,15 @@
                             </div>
 
                             <div>
+                                <label for="lokasi_kegiatan" class="block text-sm font-medium text-gray-700 mb-1">Lokasi Kegiatan</label>
+                                <input type="text" name="lokasi_kegiatan" id="lokasi_kegiatan"
+                                       value="{{ old('lokasi_kegiatan', $event->lokasi_kegiatan ?? '') }}"
+                                       class="w-full bg-gray-50 text-gray-900 rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition duration-200 px-4 py-2.5 placeholder-gray-400"
+                                       placeholder="Contoh: Jogja, Zoom/Teams/Google Meet" required>
+                                @error('lokasi_kegiatan') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div>
                                 <label for="tanggal_pelaksanaan" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Pelaksanaan</label>
                                 <input type="date" name="tanggal_pelaksanaan" id="tanggal_pelaksanaan"
                                        value="{{ old('tanggal_pelaksanaan', isset($event) ? $event->tanggal_pelaksanaan->format('Y-m-d') : '') }}"

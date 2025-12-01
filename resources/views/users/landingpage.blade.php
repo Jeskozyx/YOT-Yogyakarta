@@ -11,8 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @viteReactRefresh
+    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 
     <style>
         /* --- GLOBAL ANIMATIONS --- */
@@ -321,9 +321,9 @@
 
                                     <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
                                         <span class="text-xs text-gray-400 font-semibold">
-                                            <i class="fas fa-map-marker-alt mr-1"></i> Yogyakarta
+                                            <i class="fas fa-map-marker-alt mr-1"></i> {{$event->lokasi_kegiatan}}
                                         </span>
-                                        <a href="#" class="text-sm font-bold text-gray-900 flex items-center gap-2 group/link hover:text-blue-600 transition-colors">
+                                        <a href="{{ route('division.detail', strtolower($event->divisi)) }}" class="text-sm font-bold text-gray-900 flex items-center gap-2 group/link hover:text-blue-600 transition-colors">
                                             See Details 
                                             <i class="fas fa-arrow-right transform group-hover/link:translate-x-1 transition-transform"></i>
                                         </a>

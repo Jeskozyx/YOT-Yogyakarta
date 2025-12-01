@@ -79,6 +79,7 @@ class EventController extends Controller
     {
         $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
+            'lokasi_kegiatan' => 'required|string|max:255',
             'tanggal_pelaksanaan' => 'required|date',
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:200000',
@@ -109,6 +110,7 @@ class EventController extends Controller
 
         Event::create([
             'nama_kegiatan' => $request->nama_kegiatan,
+            'lokasi_kegiatan'=> $request->lokasi_kegiatan,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
             'deskripsi' => $request->deskripsi,
             'foto' => $fotoPath,
@@ -134,6 +136,7 @@ class EventController extends Controller
 
         $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
+            'lokasi_kegiatan' => 'required|string|max:255',
             'tanggal_pelaksanaan' => 'required|date',
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:200000',
@@ -145,6 +148,7 @@ class EventController extends Controller
 
         $data = [
             'nama_kegiatan' => $request->nama_kegiatan,
+            'lokasi_kegiatan'=> $request->lokasi_kegiatan,
             'tanggal_pelaksanaan' => $request->tanggal_pelaksanaan,
             'deskripsi' => $request->deskripsi,
         ];

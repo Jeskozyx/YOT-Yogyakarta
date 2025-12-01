@@ -4,8 +4,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/', function () {
     return view('users.landingpage');
@@ -20,6 +23,8 @@ Route::get('/division', [EventController::class, 'divisionPage'])->name('divisio
 Route::get('/division/{division}', function ($division) {
     return view('users.detail', ['division' => $division]);
 })->name('division.detail');
+
+
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
