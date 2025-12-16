@@ -6,20 +6,18 @@ use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
 
-    // TAMBAHKAN METHOD INI:
     public function divisionPage()
     {
-        // 1. Ambil daftar divisi yang unik dari tabel events untuk dijadikan Tab
         $divisions = Event::select('divisi')
                           ->whereNotNull('divisi')
                           ->distinct()
                           ->pluck('divisi');
 
-        // 2. Ambil semua event yang punya foto, urutkan dari yang terbaru
         $events = Event::whereNotNull('foto')
                        ->where('foto', '!=', '')
                        ->latest('tanggal_pelaksanaan')
@@ -35,29 +33,22 @@ class EventController extends Controller
 
     public function documentation(Request $request)
     {
-        // 1. Query Dasar: Ambil event yang punya foto saja
         $query = Event::whereNotNull('foto')
                       ->where('foto', '!=', '');
 
-        // Filter Divisi
         $user = auth()->user();
         if ($user && $user->role === 'coordinator') {
             $query->where('divisi', $user->division);
         }
 
-        // 2. Logika Filter (Berdasarkan Input User)
-        
-        // Filter by Nama Kegiatan (ID)
         if ($request->filled('kegiatan')) {
             $query->where('id', $request->kegiatan);
         }
 
-        // Filter by Bulan
         if ($request->filled('bulan')) {
             $query->whereMonth('tanggal_pelaksanaan', $request->bulan);
         }
 
-        // Filter by Tahun
         if ($request->filled('tahun')) {
             $query->whereYear('tanggal_pelaksanaan', $request->tahun);
         }
@@ -77,6 +68,12 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
+        // Logging request
+        Log::info('=== KEGIATAN STORE REQUEST ===');
+        Log::info('All Input:', $request->all());
+        Log::info('All Files:', $request->allFiles());
+
+        // Validasi
         $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
             'lokasi_kegiatan' => 'required|string|max:255',
@@ -89,25 +86,31 @@ class EventController extends Controller
             'jabatan.*' => 'nullable|string|max:255',
         ]);
 
-        // Handle upload foto
+        // Handle foto dengan safe check
         $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('events', 'public');
+        try {
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $fotoPath = $request->file('foto')->store('events', 'public');
+                Log::info('✅ Foto uploaded:', ['path' => $fotoPath]);
+            }
+        } catch (\Exception $e) {
+            Log::error('❌ Foto upload error:', ['message' => $e->getMessage()]);
         }
 
-        // Proses data anggota dan jabatan
+        // Proses anggota
         $anggotaData = [];
-        if ($request->nama_anggota) {
+        if ($request->nama_anggota && is_array($request->nama_anggota)) {
             foreach ($request->nama_anggota as $index => $nama) {
                 if (!empty(trim($nama))) {
                     $anggotaData[] = [
-                        'nama' => $nama,
+                        'nama' => trim($nama),
                         'jabatan' => $request->jabatan[$index] ?? 'Anggota'
                     ];
                 }
             }
         }
 
+        // Create event
         Event::create([
             'nama_kegiatan' => $request->nama_kegiatan,
             'lokasi_kegiatan'=> $request->lokasi_kegiatan,
@@ -115,18 +118,19 @@ class EventController extends Controller
             'deskripsi' => $request->deskripsi,
             'foto' => $fotoPath,
             'anggota' => $anggotaData,
-            'divisi' => auth()->user()->division,
+            'divisi' => auth()->user()->division ?? 'GENERAL',
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('kegiatan')
+        Log::info('✅ Event created successfully');
+
+        return redirect()->route('documentations')
             ->with('success', 'Kegiatan berhasil dibuat!');
     }
 
     public function edit($id)
     {
         $event = Event::findOrFail($id);
-        // Check authorization if needed (e.g., only own division) - skipping for now as requested "all roles can edit"
         return view('screen.kegiatan', compact('event'));
     }
 
@@ -154,7 +158,7 @@ class EventController extends Controller
         ];
 
         // Handle upload foto
-        if ($request->hasFile('foto')) {
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
             // Delete old photo if exists
             if ($event->foto && Storage::disk('public')->exists($event->foto)) {
                 Storage::disk('public')->delete($event->foto);
@@ -164,11 +168,11 @@ class EventController extends Controller
 
         // Proses data anggota dan jabatan
         $anggotaData = [];
-        if ($request->nama_anggota) {
+        if ($request->nama_anggota && is_array($request->nama_anggota)) {
             foreach ($request->nama_anggota as $index => $nama) {
                 if (!empty(trim($nama))) {
                     $anggotaData[] = [
-                        'nama' => $nama,
+                        'nama' => trim($nama),
                         'jabatan' => $request->jabatan[$index] ?? 'Anggota'
                     ];
                 }
@@ -178,7 +182,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect()->route('documentations') // Redirect back to documentations
+        return redirect()->route('documentations')
             ->with('success', 'Kegiatan berhasil diperbarui!');
     }
 

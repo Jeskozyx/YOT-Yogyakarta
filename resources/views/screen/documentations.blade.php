@@ -1,3 +1,6 @@
+<head>
+    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
+</head>
 <x-app-layout>
     <div class="min-h-screen bg-gray-50 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -8,13 +11,13 @@
                     <p class="mt-2 text-gray-500 text-lg">Dokumentasi momen seru dan kegiatan komunitas.</p>
                 </div>
 
-                @auth
+                @if(auth()->user()->role === 'coordinator')
                 <a href="{{ route('kegiatan') }}" 
                    class="inline-flex items-center px-5 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:-translate-y-0.5 gap-2">
                     <span class="material-symbols-rounded">add_a_photo</span>
                     <span>Upload Dokumentasi</span>
                 </a>
-                @endauth
+                @endif
             </div>
 
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-8 sticky top-20 z-30">

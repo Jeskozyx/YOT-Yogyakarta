@@ -3,6 +3,7 @@
     <head>
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+        <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
     </head>
     
     {{-- Gunakan warna teks putih/terang agar kontras dengan background gelap --}}

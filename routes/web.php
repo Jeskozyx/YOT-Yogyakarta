@@ -12,7 +12,7 @@ Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.
 
 Route::get('/', function () {
     return view('users.landingpage');
-});
+})->name('landingpage');
 
 Route::get('/aboutus', function () {
     return view('users.aboutus');
@@ -26,9 +26,10 @@ Route::get('/division/{division}', function ($division) {
 
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/account_manage', [UserController::class, 'index'])->name('account_manage');
     Route::put('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
     Route::patch('/users/{id}/unban', [UserController::class, 'unban'])->name('users.unban');

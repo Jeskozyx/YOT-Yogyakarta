@@ -1,3 +1,6 @@
+<head>
+    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
+</head>
 <x-app-layout>
     <div class="py-4 md:py-8 bg-gray-50/50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

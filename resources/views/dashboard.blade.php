@@ -1,6 +1,7 @@
 <head>
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx']) 
+    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
 </head>
 <x-app-layout>
     <div class="min-h-screen bg-gray-50/50 pb-8">
