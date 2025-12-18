@@ -7,8 +7,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.send');
+
+// --- PUBLIC ROUTES ---
 
 Route::get('/', function () {
     return view('users.landingpage');
@@ -18,6 +25,25 @@ Route::get('/aboutus', function () {
     return view('users.aboutus');
 })->name('aboutus');
 
+// --- ROUTE CONTACT US (BARU) ---
+Route::get('/contact', function () {
+    return view('users.contact');
+})->name('contact');
+
+// --- ROUTE HALAMAN EVENT UTAMA ---
+Route::get('/event', function () {
+    // Pastikan file view ada di resources/views/users/event.blade.php
+    return view('users.event'); 
+})->name('event');
+
+// --- ROUTE HALAMAN DETAIL EVENT ---
+// Menangani URL seperti /event/1, /event/2, dst.
+Route::get('/event/{id}', function ($id) {
+    // Kita kirim $id ke view agar bisa diproses (nantinya untuk query database)
+    return view('users.event_detail', ['id' => $id]);
+})->name('event.detail');
+
+
 Route::get('/division', [EventController::class, 'divisionPage'])->name('division');
 
 Route::get('/division/{division}', function ($division) {
@@ -25,8 +51,7 @@ Route::get('/division/{division}', function ($division) {
 })->name('division.detail');
 
 
-
-
+// --- AUTH & ADMIN ROUTES ---
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -35,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/users/{id}/unban', [UserController::class, 'unban'])->name('users.unban');
 });
 
-// HANYA BUAT INPUT KEGIATAN SAJA
+// HANYA BUAT INPUT KEGIATAN SAJA (BACKEND/ADMIN)
 Route::middleware(['auth'])->group(function () {
     Route::get('/kegiatan', [EventController::class, 'create'])->name('kegiatan'); // Langsung ke form create
     Route::post('/kegiatan', [EventController::class, 'store'])->name('kegiatan.store');
