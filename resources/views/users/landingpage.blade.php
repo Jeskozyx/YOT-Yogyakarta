@@ -1,4 +1,4 @@
-@include('layouts.navbar_users')
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -10,9 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+    @vite(['resources/css/app.css'])
 
     <style>
         /* --- GLOBAL ANIMATIONS --- */
@@ -102,6 +103,7 @@
 </head>
 
 <body class="bg-gradient-to-br from-gray-50 to-white font-[Inter] overflow-x-hidden">
+    @include('layouts.navbar_users')
     <section class="relative min-h-screen flex flex-col items-center pt-20">
         
         <div class="absolute inset-0 -z-10 overflow-hidden">
@@ -127,9 +129,8 @@
             </div>
 
             <div class="max-w-7xl mx-auto mb-10 animate-fade-in-up animation-delay-600 relative">
-                
+                <h2 class="sr-only">Featured Programs</h2>
                 <div class="hanging-container relative h-[550px] md:h-[600px] w-full overflow-hidden">
-                    
                     <div class="absolute top-12 left-[-5%] w-[110%] h-33 z-0 pointer-events-none">
                         <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-full">
                             <path d="M-100,5 Q720,110 1540,5" stroke="#9CA3AF" stroke-width="3" fill="none" class="opacity-70"/>
@@ -140,22 +141,12 @@
                         @php
                             $divisions = ['TECHNOLOGY', 'GREEN', 'CATALYST', 'ENERGY', 'ENTREPRENEURSHIP', 'SOCIAL', 'MARCOMM'];
                             $carouselItems = [];
-                            
                             foreach($divisions as $divisionName) {
-                                $event = \App\Models\Event::where('divisi', $divisionName)
-                                            ->whereNotNull('foto')
-                                            ->latest()
-                                            ->first();
-                                
+                                $event = \App\Models\Event::where('divisi', $divisionName)->whereNotNull('foto')->latest()->first();
                                 if($event) {
-                                    $carouselItems[] = [
-                                        'image' => asset('storage/' . $event->foto),
-                                        'program' => $event->nama_kegiatan,
-                                        'division' => $divisionName
-                                    ];
+                                    $carouselItems[] = ['image' => asset('storage/' . $event->foto), 'program' => $event->nama_kegiatan, 'division' => $divisionName];
                                 }
                             }
-
                             // Fallback Data
                             if(empty($carouselItems)) {
                                 $carouselItems = [
@@ -171,44 +162,28 @@
                         @endphp
 
                         @foreach ($carouselItems as $index => $item)
-                            <div class="hanging-item absolute top-14 left-1/2 w-[280px] md:w-[320px] {{ $index === 0 ? 'active' : '' }}" 
-                                 data-index="{{ $index }}">
-                                
+                            <div class="hanging-item absolute top-14 left-1/2 w-[280px] md:w-[320px] {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
                                 <div class="absolute -top-9 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center drop-shadow-md">
                                     <div class="w-3 h-3 bg-gray-400 rounded-full mb-[-8px] relative z-20 border border-white"></div>
                                     <div class="w-7 h-10 bg-green-500 rounded shadow-sm border-t-[3px] border-green-400 relative z-10">
                                         <div class="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-4 bg-black/10 rounded-full"></div>
                                     </div>
                                 </div>
-
                                 <div class="bg-white p-3 pb-6 rounded-2xl shadow-xl border border-gray-100 mt-[-10px] relative z-40">
-                                    
                                     <div class="relative h-56 md:h-64 w-full overflow-hidden rounded-lg bg-gray-100 group shadow-inner">
-                                        <img src="{{ $item['image'] }}" 
-                                             alt="{{ $item['program'] }}" 
-                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                             onerror="this.src='images/divisi/Technology.png'">
+                                        <img src="{{ $item['image'] }}" alt="{{ $item['program'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='images/divisi/Technology.png'" loading="{{ $index === 0 ? 'eager' : 'lazy' }}">
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-60"></div>
                                     </div>
-                                    
                                     <div class="pt-4 px-2 text-left">
                                         <h3 class="text-xl font-extrabold text-gray-900 leading-tight mb-1 uppercase tracking-tight">{{ $item['division'] }}</h3>
-                                        <p class="text-sm text-gray-500 font-medium line-clamp-1">{{ $item['program'] }}</p>
-                                        <!-- <p class="text-xs text-gray-400 mt-2">Learn more about {{ strtolower($item['division']) }}</p> -->
+                                        <p class="text-sm text-gray-600 font-medium line-clamp-1">{{ $item['program'] }}</p>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-
-                    <button onclick="modernPrevSlide()" 
-                            class="absolute left-2 md:left-10 top-[45%] bg-white/90 backdrop-blur hover:bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 text-gray-800 border border-gray-200">
-                        <i class="fas fa-chevron-left text-xl"></i>
-                    </button>
-                    <button onclick="modernNextSlide()" 
-                            class="absolute right-2 md:right-10 top-[45%] bg-white/90 backdrop-blur hover:bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 text-gray-800 border border-gray-200">
-                        <i class="fas fa-chevron-right text-xl"></i>
-                    </button>
+                    <button onclick="modernPrevSlide()" aria-label="Previous Slide" class="absolute left-2 md:left-10 top-[45%] bg-white/90 backdrop-blur hover:bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 text-gray-800 border border-gray-200"><i class="fas fa-chevron-left text-xl"></i></button>
+                    <button onclick="modernNextSlide()" aria-label="Next Slide" class="absolute right-2 md:right-10 top-[45%] bg-white/90 backdrop-blur hover:bg-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 z-50 text-gray-800 border border-gray-200"><i class="fas fa-chevron-right text-xl"></i></button>
                 </div>
             </div>
 
@@ -238,13 +213,12 @@
                                     ['name' => 'MARCOMM', 'desc' => 'Branding dan komunikasi yang berdampak.', 'image' => '/images/divisi/Marcomm.png'],
                                 ];
                             @endphp
-
                             @foreach ($divisionsList as $division)
                                 <div class="division-card min-w-full md:min-w-[calc(33.333%-16px)] bg-white rounded-3xl p-6 shadow-lg flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-gray-100">
                                     <div class="w-full aspect-square mb-6 rounded-2xl border-2 border-[#FFF000] bg-gray-50 relative overflow-hidden">
                                         <div class="floating-image-container w-full h-full">
                                             @if(file_exists(public_path($division['image'])))
-                                                 <img src="{{ asset($division['image']) }}" alt="{{ $division['name'] }}" class="w-full h-full object-cover floating-image">
+                                                 <img src="{{ asset($division['image']) }}" alt="{{ $division['name'] }}" class="w-full h-full object-cover floating-image" loading="lazy">
                                             @else
                                                  <div class="flex items-center justify-center h-full text-yellow-500 font-bold">{{ $division['name'] }} IMG</div>
                                             @endif
@@ -253,7 +227,7 @@
                                     <h3 class="bg-[#FFF000] px-6 py-1 rounded-full text-xl font-extrabold text-gray-900 mb-4 shadow-sm inline-block">
                                         {{ $division['name'] }}
                                     </h3>
-                                    <p class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow">
+                                    <p class="text-gray-700 text-sm leading-relaxed mb-6 flex-grow">
                                         {{ $division['desc'] }}
                                     </p>
                                     <a href="{{ route('division.detail', strtolower($division['name'])) }}" class="mt-auto px-6 py-2 bg-[#4F53EA] hover:bg-[#42C4E3] text-white font-bold rounded-full transition-colors duration-300 shadow-md">
@@ -263,13 +237,8 @@
                             @endforeach
                         </div>
                     </div>
-
-                    <button onclick="prevDivision()" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -ml-4 border border-gray-100">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button onclick="nextDivision()" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -mr-4 border border-gray-100">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                    <button onclick="prevDivision()" aria-label="Previous Division" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -ml-4 border border-gray-100"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="nextDivision()" aria-label="Next Division" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -mr-4 border border-gray-100"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
 
@@ -280,53 +249,27 @@
                 </div>
 
                 <div class="space-y-8 px-4 md:px-12">
-                    @php
-                        // LOGIC: Ambil 3 event terbaru
-                        $events = \App\Models\Event::latest()->take(3)->get();
-                    @endphp
-
+                    @php $events = \App\Models\Event::latest()->take(3)->get(); @endphp
                     @forelse ($events as $event)
                         <div class="group relative bg-white border border-gray-100 rounded-[1rem] p-4 shadow-lg hover:shadow-2xl transition-all duration-300">
                             <div class="flex flex-col md:flex-row gap-6">
-                                
                                 <div class="w-full md:w-72 flex-shrink-0">
                                     <div class="aspect-[4/3] md:h-56 w-full rounded-2xl overflow-hidden relative">
                                         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-3 py-1 rounded-lg text-xs font-bold shadow-sm z-10 border border-gray-100">
                                             {{ \Carbon\Carbon::parse($event->tanggal_pelaksanaan)->format('d M Y') }}
                                         </div>
-                                        
-                                        <img src="{{ asset('storage/' . $event->foto) }}" 
-                                             onerror="this.src='https://via.placeholder.com/400x300?text=Event+YOT'" 
-                                             alt="{{ $event->nama_kegiatan }}"
-                                             class="w-full h-full object-cover transform transition-transform duration-700">
-                                        
-                                        <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        <img src="{{ asset('storage/' . $event->foto) }}" onerror="this.src='https://via.placeholder.com/400x300?text=Event+YOT'" alt="{{ $event->nama_kegiatan }}" class="w-full h-full object-cover transform transition-transform duration-700" loading="lazy">
                                     </div>
                                 </div>
-
                                 <div class="flex-1 flex flex-col justify-center py-2 pr-4">
                                     <div class="mb-3">
-                                        <span class="inline-block bg-[#FFF000] text-black text-[10px] font-extrabold px-3 py-1 rounded-full tracking-wider uppercase">
-                                            {{ $event->divisi }}
-                                        </span>
+                                        <span class="inline-block bg-[#FFF000] text-black text-[10px] font-extrabold px-3 py-1 rounded-full tracking-wider uppercase">{{ $event->divisi }}</span>
                                     </div>
-
-                                    <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                                        {{ $event->nama_kegiatan }}
-                                    </h3>
-                                    
-                                    <p class="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
-                                        {{ $event->deskripsi ?? 'Kegiatan inspiratif dari Young On Top Yogyakarta untuk membangun generasi muda yang berdampak positif.' }}
-                                    </p>
-
+                                    <h3 class="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">{{ $event->nama_kegiatan }}</h3>
+                                    <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">{{ $event->deskripsi ?? 'Kegiatan inspiratif dari Young On Top Yogyakarta.' }}</p>
                                     <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                                        <span class="text-xs text-gray-400 font-semibold">
-                                            <i class="fas fa-map-marker-alt mr-1"></i> {{$event->lokasi_kegiatan}}
-                                        </span>
-                                        <a href="{{ route('division.detail', strtolower($event->divisi)) }}" class="text-sm font-bold text-gray-900 flex items-center gap-2 group/link hover:text-blue-600 transition-colors">
-                                            See Details 
-                                            <i class="fas fa-arrow-right transform group-hover/link:translate-x-1 transition-transform"></i>
-                                        </a>
+                                        <span class="text-xs text-gray-600 font-semibold"><i class="fas fa-map-marker-alt mr-1"></i> {{$event->lokasi_kegiatan}}</span>
+                                        <a href="{{ route('division.detail', strtolower($event->divisi)) }}" class="text-sm font-bold text-gray-900 flex items-center gap-2 group/link hover:text-blue-600 transition-colors">See Details <i class="fas fa-arrow-right transform group-hover/link:translate-x-1 transition-transform"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -334,49 +277,11 @@
                     @empty
                         <div class="text-center py-16 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200">
                             <i class="far fa-folder-open text-4xl text-gray-300 mb-3"></i>
-                            <p class="text-gray-500 font-medium">Belum ada event yang ditambahkan.</p>
+                            <p class="text-gray-600 font-medium">Belum ada event yang ditambahkan.</p>
                         </div>
                     @endforelse
                 </div>
             </div>
-
-            <div class="max-w-8xl mx-auto mb-24 animate-fade-in-up animation-delay-600">
-                <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Meet The Developers</h2>
-                <div class="relative px-4 md:px-12">
-                    <div class="team-carousel-container overflow-hidden py-4">
-                        <div id="teamCarouselTrack" class="flex transition-transform duration-500 ease-in-out gap-6">
-                            @php
-                                $teamMembers = [
-                                    ['name' => 'Billy Boen', 'role' => 'Founder', 'image' => 'images/team/Muhammad Sulthan Al Azzam_124230127.png'],
-                                    ['name' => 'Stevanus G', 'role' => 'Co-Founder', 'image' => 'images/divisi/IMG_2437.JPG'],
-                                    ['name' => 'Noverica W', 'role' => 'Director', 'image' => 'https://ui-avatars.com/api/?name=Noverica+Widjojo&background=0D8ABC&color=fff'],
-                                    ['name' => 'Team 4', 'role' => 'Staff', 'image' => 'https://ui-avatars.com/api/?name=Team+4&background=0D8ABC&color=fff'],
-                                    ['name' => 'Team 5', 'role' => 'Staff', 'image' => 'https://ui-avatars.com/api/?name=Team+5&background=0D8ABC&color=fff'],
-                                ];
-                            @endphp
-                            @foreach ($teamMembers as $member)
-                                <div class="team-card min-w-full md:min-w-[calc(50%-12px)] lg:min-w-[calc(25%-18px)] flex flex-col items-center group">
-                                    <div class="w-full aspect-[3/4] mb-4 rounded-2xl overflow-hidden shadow-lg relative bg-gray-200">
-                                        <img src="{{ $member['image'] }}" onerror="this.src='https://ui-avatars.com/api/?name={{$member['name']}}'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                                            <span class="text-white font-medium">{{ $member['role'] }}</span>
-                                        </div>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-900">{{ $member['name'] }}</h3>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    
-                    <button onclick="prevTeam()" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -ml-4 border border-gray-100">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button onclick="nextTeam()" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl hover:scale-110 z-10 -mr-4 border border-gray-100">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-
             <div class="flex justify-center animate-fade-in-up animation-delay-1000 mb-20">
                 <button class="group relative px-12 py-5 bg-[#FFF000] text-black font-bold text-xl rounded-full shadow-xl hover:shadow-yellow-400/50 transition-all duration-300 hover:scale-105 hover:-translate-y-1 overflow-hidden">
                     <span class="relative z-10 flex items-center gap-2">
@@ -386,30 +291,107 @@
                 </button>
             </div>
             
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in-up animation-delay-1000 mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                    
+                    <div class="bg-[#FFF000] rounded-[2.5rem] p-8 md:p-10 shadow-xl relative overflow-hidden">
+                        <h2 class="text-4xl font-extrabold text-black mb-2">Contact Us</h2>
+                        <p class="text-black font-medium mb-1">Tertarik untuk berkolaborasi?</p>
+                        <p class="text-black text-sm mb-6 leading-relaxed">
+                            Hubungi kami melalui form di bawah ini. Kami siap mendiskusikan peluang kerja sama lebih lanjut.
+                        </p>
+
+                        <form id="contactForm" class="space-y-4">
+                            <div>
+                                <input type="text" id="nama" placeholder="Nama Lengkap" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                            </div>
+                            <div>
+                                <input type="text" id="nowa" placeholder="No Whatsapp" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                            </div>
+                            <div>
+                                <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all" required>
+                            </div>
+                            <div>
+                                <textarea id="pesan" placeholder="Pesan ...." rows="4" class="w-full px-4 py-3 rounded-xl border border-yellow-500 bg-[#FFF000]/50 placeholder-gray-700 text-black focus:outline-none focus:ring-2 focus:ring-black focus:bg-yellow-200 transition-all resize-none" required></textarea>
+                            </div>
+                            <button type="submit" class="bg-black text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 transition-colors shadow-lg mt-2">
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="flex flex-col h-full space-y-8">
+                        <div class="space-y-4 text-gray-800">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 bg-white p-2 rounded-full shadow-sm">
+                                    <i class="fas fa-map-marker-alt text-gray-900"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Jl. Babarsari Jl. Tambak Bayan No.2, Janti, Caturtunggal</p>
+                                    <p class="text-gray-600">Depok, Sleman, Yogyakarta</p>
+                                </div>
+                            </div>                   
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-full shadow-sm">
+                                    <i class="fas fa-envelope text-gray-900"></i>
+                                </div>
+                                <p class="text-gray-700">info@yotinspirasi.com (General)</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-full shadow-sm">
+                                    <i class="fas fa-envelope text-gray-900"></i>
+                                </div>
+                                <p class="text-gray-700">brand@yotinspirasi.com (Partnership)</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-full shadow-sm">
+                                    <i class="fas fa-phone-alt text-gray-900"></i>
+                                </div>
+                                <p class="text-gray-700">0877-3843-8643</p>
+                            </div>       
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-2 rounded-full shadow-sm">
+                                    <i class="fab fa-whatsapp text-gray-900"></i>
+                                </div>
+                                <p class="text-gray-700">0877-3843-8643 (WhatsApp)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full h-64 md:h-full min-h-[300px] rounded-3xl overflow-hidden shadow-lg border border-gray-200 bg-white">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2788.1766242797607!2d110.41597521867824!3d-7.781324937456133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a599155555555%3A0x536eb168b1dca148!2sUniversitas%20Pembangunan%20Nasional%20%22Veteran%22%20Yogyakarta%20-%20Kampus%202%20Babarsari!5e1!3m2!1sid!2sid!4v1763609477629!5m2!1sid!2sid" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                title="Lokasi YOT Yogyakarta"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <div class="w-full z-20 relative">
             @include('layouts.footer')
         </div>
+
     </section>
 
     <script>
-        // --- LOGIC HANGING CAROUSEL (FIXED BUGS: SPAM CLICK & DIRECTION) ---
+        // --- LOGIC HANGING CAROUSEL ---
         let modernCurrentSlide = 0;
         const hangingItems = document.querySelectorAll('.hanging-item'); 
         const totalModernSlides = hangingItems.length;
         let modernAutoSlideInterval;
-        
-        // FIX 1: Variabel Arah (1 = Kanan, -1 = Kiri)
         let autoSlideDirection = 1; 
-        
-        // FIX 2: Flag Animasi untuk Mencegah Spam Click
         let isAnimating = false; 
 
         function updateModernCarousel() {
             const items = document.querySelectorAll('.hanging-item');
-            
             items.forEach((item, index) => {
                 item.classList.remove('active', 'prev', 'next');
-                
-                // Logika Circular Buffer
                 if (index === modernCurrentSlide) {
                     item.classList.add('active');
                 } else if (index === (modernCurrentSlide - 1 + totalModernSlides) % totalModernSlides) {
@@ -419,51 +401,33 @@
                 }
             });
         }
-
-        // Helper: Pindah slide sejauh step (+1 atau -1)
         function moveSlideStep(step) {
             modernCurrentSlide = (modernCurrentSlide + step + totalModernSlides) % totalModernSlides;
             updateModernCarousel();
         }
-
-        // --- HANDLER TOMBOL NEXT/PREV ---
         function modernNextSlide() {
-            // FIX: Cek apakah animasi sedang berjalan? Jika ya, stop.
             if(isAnimating) return;
-
-            isAnimating = true; // Kunci tombol
-            
-            autoSlideDirection = 1; // Set arah ke kanan (user preference)
+            isAnimating = true;
+            autoSlideDirection = 1;
             moveSlideStep(1);
             resetModernAutoSlide();
-
-            // Lepaskan kunci setelah durasi CSS selesai (0.8 detik = 800ms)
             setTimeout(() => { isAnimating = false; }, 800);
         }
-
         function modernPrevSlide() {
             if(isAnimating) return;
-
             isAnimating = true;
-
-            autoSlideDirection = -1; // Set arah ke kiri (user preference)
+            autoSlideDirection = -1;
             moveSlideStep(-1);
             resetModernAutoSlide();
-
             setTimeout(() => { isAnimating = false; }, 800);
         }
-
-        // --- AUTO SLIDE ---
         function autoSlideTick() {
-            // Auto slide bergerak sesuai arah terakhir yang dipilih user
             moveSlideStep(autoSlideDirection);
         }
-
         function startModernAutoSlide() {
             if(modernAutoSlideInterval) clearInterval(modernAutoSlideInterval);
-            modernAutoSlideInterval = setInterval(autoSlideTick, 4000); // 4 detik
+            modernAutoSlideInterval = setInterval(autoSlideTick, 4000);
         }
-
         function resetModernAutoSlide() {
             clearInterval(modernAutoSlideInterval);
             startModernAutoSlide();
@@ -475,7 +439,6 @@
         const divisionCards = document.querySelectorAll('.division-card');
         
         function getVisibleCards() { return window.innerWidth >= 768 ? 3 : 1; }
-
         function updateDivisionCarousel() {
             if(divisionCards.length > 0 && divisionTrack) {
                 const cardStyle = window.getComputedStyle(divisionTrack);
@@ -485,66 +448,42 @@
                 divisionTrack.style.transform = `translateX(-${moveAmount}px)`;
             }
         }
-
         function nextDivision() {
             const maxIndex = divisionCards.length - getVisibleCards();
-            if (divisionCurrentIndex < maxIndex) {
-                divisionCurrentIndex++;
-            } else {
-                divisionCurrentIndex = 0;
-            }
+            if (divisionCurrentIndex < maxIndex) { divisionCurrentIndex++; } else { divisionCurrentIndex = 0; }
             updateDivisionCarousel();
         }
-
         function prevDivision() {
-            if (divisionCurrentIndex > 0) {
-                divisionCurrentIndex--;
-            } else {
+            if (divisionCurrentIndex > 0) { divisionCurrentIndex--; } else {
                 const maxIndex = divisionCards.length - getVisibleCards();
                 divisionCurrentIndex = maxIndex;
             }
             updateDivisionCarousel();
         }
 
-        // --- TEAM CAROUSEL ---
-        let teamCurrentIndex = 0;
-        const teamTrack = document.getElementById('teamCarouselTrack');
-        const teamCards = document.querySelectorAll('.team-card');
+        // --- CONTACT FORM LOGIC (WHATSAPP) ---
+        const contactForm = document.getElementById('contactForm');
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault(); 
+                var nama = document.getElementById('nama').value;
+                var nowaUser = document.getElementById('nowa').value;
+                var email = document.getElementById('email').value;
+                var pesan = document.getElementById('pesan').value;
+                var nomorTujuan = "6287738438643"; 
 
-        function getVisibleTeamCards() {
-            if (window.innerWidth >= 1024) return 4;
-            if (window.innerWidth >= 768) return 2;
-            return 1;
-        }
+                var text = "Halo Admin YOT Inspirasi,%0a%0a" +
+                           "Saya ingin mendiskusikan kolaborasi.%0a" +
+                           "--------------------------------%0a" +
+                           "*Nama:* " + nama + "%0a" +
+                           "*No WA:* " + nowaUser + "%0a" +
+                           "*Email:* " + email + "%0a" +
+                           "--------------------------------%0a" +
+                           "*Pesan:*%0a" + pesan;
 
-        function updateTeamCarousel() {
-            if(teamCards.length > 0 && teamTrack) {
-                const cardStyle = window.getComputedStyle(teamTrack);
-                const gap = parseFloat(cardStyle.gap) || 24;
-                const cardWidth = teamCards[0].offsetWidth;
-                const moveAmount = (cardWidth + gap) * teamCurrentIndex;
-                teamTrack.style.transform = `translateX(-${moveAmount}px)`;
-            }
-        }
-
-        function nextTeam() {
-            const maxIndex = teamCards.length - getVisibleTeamCards();
-            if (teamCurrentIndex < maxIndex) {
-                teamCurrentIndex++;
-            } else {
-                teamCurrentIndex = 0;
-            }
-            updateTeamCarousel();
-        }
-
-        function prevTeam() {
-            if (teamCurrentIndex > 0) {
-                teamCurrentIndex--;
-            } else {
-                const maxIndex = teamCards.length - getVisibleTeamCards();
-                teamCurrentIndex = maxIndex;
-            }
-            updateTeamCarousel();
+                var waUrl = "https://wa.me/" + nomorTujuan + "?text=" + text;
+                window.open(waUrl, '_blank');
+            });
         }
 
         // --- INITIALIZATION ---
@@ -552,19 +491,14 @@
             if(hangingItems.length > 0) {
                 updateModernCarousel();
                 startModernAutoSlide();
-                
                 const wrapper = document.querySelector('.hanging-container');
                 if(wrapper) {
-                    // Pause on Hover
                     wrapper.addEventListener('mouseenter', () => clearInterval(modernAutoSlideInterval));
                     wrapper.addEventListener('mouseleave', () => startModernAutoSlide());
-                    
-                    // Swipe Support
                     let touchStartX = 0;
                     wrapper.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
                     wrapper.addEventListener('touchend', e => {
                         const touchEndX = e.changedTouches[0].screenX;
-                        // Mencegah swipe jika animasi sedang berjalan
                         if (!isAnimating) {
                             if (touchEndX < touchStartX - 50) modernNextSlide();
                             if (touchEndX > touchStartX + 50) modernPrevSlide();
@@ -572,16 +506,12 @@
                     });
                 }
             }
-
             updateDivisionCarousel();
-            updateTeamCarousel();
         });
 
         window.addEventListener('resize', () => {
             divisionCurrentIndex = 0;
-            teamCurrentIndex = 0;
             updateDivisionCarousel();
-            updateTeamCarousel();
         });
     </script>
 </body>

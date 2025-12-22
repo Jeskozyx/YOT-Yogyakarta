@@ -3,11 +3,14 @@
     <head>
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
         <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
     </head>
     
     {{-- Gunakan warna teks putih/terang agar kontras dengan background gelap --}}
-    <body class="font-[Inter] text-white antialiased">
+    <body class="font-sans text-white antialiased">
         
         {{-- PERBAIKAN PENTING: --}}
         {{-- 1. ID harus sama dengan di app.jsx: id="react-color-bends-background" --}}

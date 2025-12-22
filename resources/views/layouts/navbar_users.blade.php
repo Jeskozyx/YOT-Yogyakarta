@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOT Jogja</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .nav-links a {
             position: relative;
@@ -21,15 +12,15 @@
             background-color: #facc15;
             transition: width 0.3s ease;
         }
-        .nav-links a:hover::after {
+        .nav-links a:hover::after,
+        .nav-links a.active::after { /* Tambahan agar garis bawah juga menetap saat aktif */
             width: 100%;
         }
         .mobile-menu {
             transition: all 0.3s ease-in-out;
         }
     </style>
-</head>
-<body class="font-sans">
+
     <nav id="navbar" class="bg-transparent font-sans fixed w-full top-0 left-0 z-50 transition-all duration-500">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between py-3">
@@ -37,13 +28,37 @@
                     <img src="{{ asset('images/logos/Jogja_logo.png') }}" alt="YOT Logo" class="h-[77px] w-auto">
                 </div>
                 
-                <ul class="hidden md:flex list-none items-center space-x-6 lg:space-x-8 m-0 p-0">
-                    <li><a href="{{ route('landingpage') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Home</a></li>
-                    <li><a href="{{ route('aboutus') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">About Us</a></li>
-                    <li><a href="{{ route('division') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Division</a></li>
-                    <li><a href="{{ route('event') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Event</a></li>
-                    
-                    <li><a href="{{ route('contact') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">Contact Us</a></li>
+                <ul class="hidden md:flex list-none items-center space-x-6 lg:space-x-8 m-0 p-0 nav-links">
+                    <li>
+                        <a href="{{ route('landingpage') }}" 
+                           class="{{ request()->routeIs('landingpage') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('aboutus') }}" 
+                           class="{{ request()->routeIs('aboutus') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('division') }}" 
+                           class="{{ request()->routeIs('division*') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           Division
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('event') }}" 
+                           class="{{ request()->routeIs('event*') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           Event
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('contact') }}" 
+                           class="{{ request()->routeIs('contact') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           Contact Us
+                        </a>
+                    </li>
                     
                     <li><a href="{{ route('login') }}" class="login-btn bg-yellow-400 font-bold text-black py-2 px-6 rounded-full no-underline transition-all duration-300 hover:bg-yellow-500 hover:shadow-md">Login</a></li>
                 </ul>
@@ -55,12 +70,36 @@
             
             <div id="mobile-menu" class="mobile-menu md:hidden bg-white shadow-lg rounded-lg mt-2 py-4 px-6 hidden">
                 <ul class="flex flex-col space-y-4">
-                    <li><a href="{{ route('landingpage') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">Home</a></li>
-                    <li><a href="{{ route('aboutus') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">About Us</a></li>
-                    <li><a href="{{ route('division') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">Division</a></li>
-                    <li><a href="{{ route('event') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">Event</a></li>
-                    
-                    <li><a href="{{ route('contact') }}" class="text-black no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">Contact Us</a></li>
+                    <li>
+                        <a href="{{ route('landingpage') }}" 
+                           class="{{ request()->routeIs('landingpage') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('aboutus') }}" 
+                           class="{{ request()->routeIs('aboutus') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('division') }}" 
+                           class="{{ request()->routeIs('division*') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           Division
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('event') }}" 
+                           class="{{ request()->routeIs('event*') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           Event
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('contact') }}" 
+                           class="{{ request()->routeIs('contact') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           Contact Us
+                        </a>
+                    </li>
                     
                     <li><a href="{{ route('login') }}" class="login-btn bg-yellow-400 font-bold text-black py-2 px-6 rounded-full no-underline transition-all duration-300 hover:bg-yellow-500 text-center block mt-2">Login</a></li>
                 </ul>
@@ -109,5 +148,3 @@
             }
         });
     </script>
-</body>
-</html>
