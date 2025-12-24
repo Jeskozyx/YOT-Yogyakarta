@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\TaskNoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/account_manage', [UserController::class, 'index'])->name('account_manage');
     Route::put('/users/{id}/suspend', [UserController::class, 'suspend'])->name('users.suspend');
     Route::patch('/users/{id}/unban', [UserController::class, 'unban'])->name('users.unban');
+    Route::get('/documentations', [EventController::class, 'documentation'])->name('documentations');
 });
 
 // HANYA BUAT INPUT KEGIATAN SAJA (BACKEND/ADMIN)
@@ -69,7 +71,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kegiatan/{id}', [EventController::class, 'destroy'])->name('kegiatan.destroy');
 });
 
-Route::get('/documentations', [EventController::class, 'documentation'])->name('documentations');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/tasknotes', [TaskNoteController::class, 'index'])->name('tasknotes');
+    Route::post('/tasknotes', [TaskNoteController::class, 'store'])->name('tasknotes.store');
+    Route::put('/tasknotes/{id}', [TaskNoteController::class, 'update'])->name('tasknotes.update');
+    Route::delete('/tasknotes/{id}', [TaskNoteController::class, 'destroy'])->name('tasknotes.destroy');
+    // Using PATCH for status toggle, but update() can handle it if we pass status. 
+    // Let's stick to update() for simplicity or add a specific route if needed.
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

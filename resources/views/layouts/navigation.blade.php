@@ -21,6 +21,7 @@
                     @endif
                 </a>
 
+                @if(auth()->user()->role === 'coordinator')
                 <a href="{{ route('kegiatan') }}" 
                    class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:scale-105
                    {{ request()->routeIs('kegiatan') ? 'bg-blue-100 text-blue-600 active-nav-anim' : 'text-gray-500 hover:bg-gray-50 hover:text-blue-500' }}">
@@ -29,6 +30,7 @@
                         <span class="font-semibold text-sm">Kegiatan</span>
                     @endif
                 </a>
+                @endif
 
                 <a href="{{ route('documentations') }}" 
                    class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:scale-105
@@ -38,6 +40,17 @@
                         <span class="font-semibold text-sm">Dokumentasi</span>
                     @endif
                 </a>
+
+                @if(auth()->user()->role === 'admin')
+                <a href="{{ route('tasknotes') }}" 
+                   class="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 ease-in-out hover:scale-105
+                   {{ request()->routeIs('tasknotes') ? 'bg-blue-100 text-blue-600 active-nav-anim' : 'text-gray-500 hover:bg-gray-50 hover:text-blue-500' }}">
+                    <span class="material-symbols-rounded {{ request()->routeIs('tasknotes') ? 'fill-current' : '' }}">notes</span>
+                    @if(request()->routeIs('tasknotes'))
+                        <span class="font-semibold text-sm">Task & Notes</span>
+                    @endif
+                </a>
+                @endif
 
                 @if(auth()->user()->role === 'admin')
                 <a href="{{ route('account_manage') }}" 

@@ -12,10 +12,10 @@
                     <p class="text-gray-500 text-sm mt-1">Kelola pengguna, peran, dan akses sistem.</p>
                 </div>
                 <div class="w-full md:w-auto">
-                    <button class="w-full md:w-auto inline-flex items-center justify-center px-4 py-3 md:py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition duration-200 gap-2">
+                    <!-- <button class="w-full md:w-auto inline-flex items-center justify-center px-4 py-3 md:py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition duration-200 gap-2">
                         <span class="material-symbols-rounded text-xl">person_add</span>
                         <span class="text-sm md:text-base">New User</span>
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
