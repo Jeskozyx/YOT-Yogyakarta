@@ -13,8 +13,8 @@
             transition: width 0.3s ease;
         }
         .nav-links a:hover::after,
-        .nav-links a.active::after { /* Tambahan agar garis bawah juga menetap saat aktif */
-            width: 100%;
+        .nav-links a.active::after { /* ubah ke 100% kalau mau pake underline tapi gausahlah */
+            width: 0%;
         }
         .mobile-menu {
             transition: all 0.3s ease-in-out;
@@ -42,9 +42,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('division') }}" 
-                           class="{{ request()->routeIs('division*') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
-                           Division
+                        <a href="{{ route('gallery') }}" 
+                           class="{{ request()->routeIs('gallery*') ? 'text-yellow-500 active' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500">
+                           Gallery
                         </a>
                     </li>
                     <li>
@@ -83,9 +83,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('division') }}" 
-                           class="{{ request()->routeIs('division*') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
-                           Division
+                        <a href="{{ route('gallery') }}" 
+                           class="{{ request()->routeIs('gallery*') ? 'text-yellow-500' : 'text-black' }} no-underline font-semibold transition-colors duration-300 hover:text-yellow-500 block py-2">
+                           Gallery
                         </a>
                     </li>
                     <li>

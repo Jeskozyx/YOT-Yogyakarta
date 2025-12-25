@@ -1,6 +1,3 @@
-<head>
-    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
-</head>
 <x-app-layout>
     <div class="py-4 md:py-8 bg-gray-50/50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -282,6 +279,7 @@
         </div>
     </div>
 
+    @push('scripts')
     <script>
     function openSuspendModal(userId, userName) {
         // Set nama user di teks modal
@@ -300,4 +298,5 @@
         document.getElementById('suspendModal').classList.add('hidden');
     }
     </script>
+    @endpush
 </x-app-layout>

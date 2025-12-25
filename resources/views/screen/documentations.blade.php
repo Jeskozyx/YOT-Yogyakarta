@@ -1,6 +1,3 @@
-<head>
-    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
-</head>
 <x-app-layout>
     <div class="min-h-screen bg-gray-50 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -144,6 +141,7 @@
         </div>
     </div>
 
+    @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
@@ -191,4 +189,5 @@
             })
         @endif
     </script>
+    @endpush
 </x-app-layout>

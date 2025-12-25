@@ -1,17 +1,16 @@
 <x-app-layout>
     {{-- HEADER SLOT --}}
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            My Tasks
-        </h2>
-    </x-slot>
+
 
     {{-- DEPENDENCIES --}}
+    @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    @endpush
 
     {{-- STYLES --}}
+    @push('styles')
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -40,13 +39,7 @@
             transform: rotate(2deg);
         }
     </style>
-
-    {{-- PHP LOGIC: Membagi Data --}}
-    @php
-        $todoTasks = $tasks->where('status', 'pending');
-        $progressTasks = $tasks->where('status', 'in_progress'); 
-        $doneTasks = $tasks->where('status', 'completed');
-    @endphp
+    @endpush
 
     {{-- MAIN CONTAINER --}}
     <div x-data="{ viewMode: 'board' }" class="bg-gray-50 min-h-screen pb-12 font-sans">
@@ -296,6 +289,7 @@
     </div>
 
     {{-- SCRIPTS --}}
+    @push('scripts')
     <script>
         // 1. MODAL LOGIC
         function openModal(mode, task = null) {
@@ -418,4 +412,5 @@
             }
         }
     </script>
+    @endpush
 </x-app-layout>

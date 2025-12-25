@@ -18,9 +18,10 @@ Route::post('/contact-send', [ContactController::class, 'send'])->name('contact.
 
 // --- PUBLIC ROUTES ---
 
-Route::get('/', function () {
-    return view('users.landingpage');
-})->name('landingpage');
+Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('landingpage');
+
+Route::get('/events', [\App\Http\Controllers\NewsController::class, 'index'])->name('event');
+Route::get('/events/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('event.detail');
 
 Route::get('/aboutus', function () {
     return view('users.aboutus');
@@ -45,7 +46,7 @@ Route::get('/event/{id}', function ($id) {
 })->name('event.detail');
 
 
-Route::get('/division', [EventController::class, 'divisionPage'])->name('division');
+Route::get('/gallery', [EventController::class, 'gallery'])->name('gallery');
 
 Route::get('/division/{division}', function ($division) {
     return view('users.detail', ['division' => $division]);

@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')
     </head>
     <body class="font-sans antialiased bg-blue-50 text-gray-900">
         
@@ -33,5 +34,6 @@
             </div>
         </main>
         
+        @stack('scripts')
     </body>
 </html>

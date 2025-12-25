@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class EventController extends Controller
 {
 
-    public function divisionPage()
+    public function gallery()
     {
         $divisions = Event::select('divisi')
                           ->whereNotNull('divisi')
@@ -23,7 +23,7 @@ class EventController extends Controller
                        ->latest('tanggal_pelaksanaan')
                        ->get();
 
-        return view('users.division', compact('divisions', 'events'));
+        return view('users.gallery', compact('divisions', 'events'));
     }
 
     public function create()

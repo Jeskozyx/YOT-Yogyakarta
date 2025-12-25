@@ -20,7 +20,11 @@ class TaskNoteController extends Controller
         // Sorting berdasarkan tanggal terbaru
         $tasks = $query->latest('date')->get();
 
-        return view('screen.tasknotes', compact('tasks'));
+        $todoTasks = $tasks->where('status', 'pending');
+        $progressTasks = $tasks->where('status', 'in_progress'); 
+        $doneTasks = $tasks->where('status', 'completed');
+
+        return view('screen.tasknotes', compact('tasks', 'todoTasks', 'progressTasks', 'doneTasks'));
     }
 
     public function store(Request $request)

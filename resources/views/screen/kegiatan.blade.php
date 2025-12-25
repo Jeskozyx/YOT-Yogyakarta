@@ -1,5 +1,4 @@
-<head>
-    <link rel="icon" type="image/png" href="{{ asset('images/logos/Logo-MS-kuning.png') }}">
+    @push('styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .tab-active { border-bottom: 2px solid #4f46e5; color: #4f46e5; background-color: #eef2ff; }
@@ -15,7 +14,7 @@
             padding-right: 2.5rem;
         }
     </style>
-</head>
+    @endpush
 <x-app-layout>
     <div class="bg-gray-50 pt-8 pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -221,6 +220,7 @@
         </form>
     </div>
 
+    @push('scripts')
     <script>
         const fileInput = document.getElementById("foto");
         const dropZone = document.getElementById("drop-zone");
@@ -505,5 +505,6 @@
         });
 
     </script>
+    @endpush
 
 </x-app-layout>
